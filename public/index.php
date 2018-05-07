@@ -14,14 +14,18 @@ Router::add('', ['controller' => 'Main', 'action' => 'index']);
 // маршрут по умолчанию для пустого URI
 Router::add('^$', ['controller' => 'Main', 'action' => 'index']);
 // маршрут по умолчанию для URI в формате /controller/action
-Router::add('^([a-z-]+)/([a-z-]+)$');
+Router::add('^/(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$');
 
+Router::dispatch($uri);
 
-debug($uri, 'URI');
+//
+//debug($uri, 'URI');
+//
+//if (Router::matchRoute($uri)) {
+//    debug(Router::getRoute(), 'Текущий маршрут');
+//} else {
+//    echo "Маршрут не найден<br><br>";
+//}
+//debug(Router::getRoutes(),'Таблица маршрутов');
 
-if (Router::matchRoute($uri)) {
-    debug(Router::getRoute(), 'Таблица маршрутов');
-} else {
-    echo 'Маршрут не найден';
-}
-debug(Router::getRoutes());
+// 18 минут

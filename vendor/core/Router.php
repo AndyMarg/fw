@@ -50,13 +50,28 @@ class Router
     public static function matchRoute($uri)
     {
         foreach (self::$routes as $pattern => $route) {
-            if (preg_match("/$pattern/i", $uri, $matches)) {
-                debug($matches, 'Массив $matches');
+            if (preg_match("#$pattern#i", $uri, $matches)) {
+                //debug($matches, 'Массив $matches');
                 self::$route = $route;
                 return true;
             }
         }
         return false;
+    }
+
+
+    /**
+     * Диспетчеризация по маршруту (вызов метода контроллера)
+     *
+     * @param string $uri URI для поиска маршрута
+     */
+    public static function dispatch($uri) {
+        if (self::matchRoute($uri)) {
+            echo "Маршрут найден!!!<br><br>";
+        } else {
+            http_response_code(404);
+            include '404.html';
+        }
     }
 
 }
