@@ -3,16 +3,17 @@
 $uri = rtrim($_SERVER['REQUEST_URI'],'/');
 
 require_once '../vendor/core/Router.php';
+require_once '../vendor/core/Config.php';
 require_once '../vendor/libs/utils.php';
 
-/*
-Router::add('/posts/add', ['controller' => 'Posts', 'action' => 'add']);
-Router::add('/posts', ['controller' => 'Posts', 'action' => 'index']);
-Router::add('', ['controller' => 'Main', 'action' => 'index']);
-*/
+require_once '../vendor/core/Controller.php';
+require_once '../app/controllers/Main.php';
+require_once '../app/controllers/Posts.php';
+require_once '../app/controllers/PostsNew.php';
+
 
 // маршрут по умолчанию для пустого URI
-Router::add('^$', ['controller' => 'Main', 'action' => 'index']);
+Router::add('^$', ['controller' => Config::DEFAULT_CONTROLLER, 'action' => Config::DEFAULT_ACTION]);
 // маршрут по умолчанию для URI в формате /controller/action
 Router::add('^/(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$');
 

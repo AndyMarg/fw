@@ -47,18 +47,27 @@ class Router
      * @param string $uri URI для поиска маршрута
      * @return bool true, если маршрут найден, иначе false
      */
-    public static function matchRoute($uri)
+    private static function matchRoute($uri)
     {
         foreach (self::$routes as $pattern => $route) {
             if (preg_match("#$pattern#i", $uri, $matches)) {
-                //debug($matches, 'Массив $matches');
+                foreach ($matches as $key => $val) {
+                    if (is_string($key)) {
+                        $route[$key] = $val;
+                    }
+                }
+                // преобразуем формат названия контроллера из first-second в FirstSecond
+                $route['controller'] = str_replace('-', '', ucwords($route['controller'], '-'));
+                // если action не определен - устанавливаем по умолчанию
+                if (!isset($route['action'])) {
+                    $route['action'] = Config::DEFAULT_ACTION;
+                }
                 self::$route = $route;
                 return true;
             }
         }
         return false;
     }
-
 
     /**
      * Диспетчеризация по маршруту (вызов метода контроллера)
@@ -67,7 +76,18 @@ class Router
      */
     public static function dispatch($uri) {
         if (self::matchRoute($uri)) {
-            echo "Маршрут найден!!!<br><br>";
+            $controllerClass = self::$route['controller'];
+            if (class_exists($controllerClass)) {
+                $controller = new $controllerClass;
+                $action = self::$route['action'];
+                if (method_exists($controller, $action)) {
+                    $controller->$action();
+                } else {
+                    echo "Метод <b>$controllerClass::$action</b> НЕ найден<br>";
+                }
+            } else {
+                echo "Контроллер <b>$controllerClass</b> НЕ найден<br>";
+            }
         } else {
             http_response_code(404);
             include '404.html';
