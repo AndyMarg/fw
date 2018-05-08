@@ -12,7 +12,7 @@ abstract class Controller
 
     // метод по умолчанию для любого контроллера
     public function index() {
-          
+           
     }
 
 }
