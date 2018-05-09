@@ -1,6 +1,9 @@
 <?php
 
-class Main extends Controller
+class Main
 {
+    public function indexAction() {
+        debug(__METHOD__, 'Вызов');
+    }
 
 }

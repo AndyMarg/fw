@@ -56,12 +56,14 @@ class Router
                         $route[$key] = $val;
                     }
                 }
-                // преобразуем формат названия контроллера из first-second в FirstSecond
+                // преобразуем формат названия контроллера из first-second-third в FirstSecondThird
                 $route['controller'] = str_replace('-', '', ucwords($route['controller'], '-'));
                 // если action не определен - устанавливаем по умолчанию
                 if (!isset($route['action'])) {
                     $route['action'] = Config::DEFAULT_ACTION;
                 }
+                // преобразуем формат названия контроллера из first-second-third в firstSecondThird
+                $route['action'] = lcfirst(str_replace('-', '', ucwords($route['action'], '-')));
                 self::$route = $route;
                 return true;
             }
@@ -79,7 +81,7 @@ class Router
             $controllerClass = self::$route['controller'];
             if (class_exists($controllerClass)) {
                 $controller = new $controllerClass;
-                $action = self::$route['action'];
+                $action = self::$route['action'] . 'Action';
                 if (method_exists($controller, $action)) {
                     $controller->$action();
                 } else {

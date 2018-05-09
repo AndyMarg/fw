@@ -1,6 +1,9 @@
 <?php
 
-class Posts extends Controller
+class Posts
 {
+    public function indexAction() {
+        debug(__METHOD__, 'Вызов');
+    }
 
 }
