@@ -1,0 +1,1 @@
+<h1>Posts::test.php view</h1>

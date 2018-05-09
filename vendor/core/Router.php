@@ -82,7 +82,7 @@ class Router
         if (self::matchRoute($uri)) {
             $controllerClass = 'app\\controllers\\' . self::$route['controller'];
             if (class_exists($controllerClass)) {
-                $controller = new $controllerClass;
+                $controller = new $controllerClass(self::$route);
                 $action = self::$route['action'] . 'Action';
                 if (method_exists($controller, $action)) {
                     $controller->$action();
