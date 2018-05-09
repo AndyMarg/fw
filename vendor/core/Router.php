@@ -1,5 +1,7 @@
 <?php
 
+namespace vendor\core;
+
 /**
  * Class Router
  * Маршрутизирует запросы
@@ -78,7 +80,7 @@ class Router
      */
     public static function dispatch($uri) {
         if (self::matchRoute($uri)) {
-            $controllerClass = self::$route['controller'];
+            $controllerClass = 'app\\controllers\\' . self::$route['controller'];
             if (class_exists($controllerClass)) {
                 $controller = new $controllerClass;
                 $action = self::$route['action'] . 'Action';

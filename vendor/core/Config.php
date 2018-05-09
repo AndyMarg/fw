@@ -1,5 +1,7 @@
 <?php
 
+namespace vendor\core;
+
 /**
  * Class Config Конфигурация фреймворка
  */

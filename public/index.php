@@ -1,11 +1,16 @@
 <?php
 
+use vendor\core\Router;
+use vendor\core\Config;
+
+error_reporting(E_ALL);
+
 define('DIR_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
 $uri = rtrim($_SERVER['REQUEST_URI'],'/');
 
-require_once '../vendor/core/Router.php';
-require_once '../vendor/core/Config.php';
+//require_once '../vendor/core/Router.php';
+//require_once '../vendor/core/Config.php';
 require_once '../vendor/libs/utils.php';
 
 require_once '../vendor/core/Controller.php';
@@ -16,7 +21,7 @@ require_once '../vendor/core/Controller.php';
 
 // функция автозагрузки
 spl_autoload_register(function ($class) {
-    $file = DIR_ROOT . "/app/controllers/$class.php";
+    $file = DIR_ROOT . '/' . str_replace('\\', '/', $class) . '.php';
     if(is_file($file)) {
         require_once $file;
     }
