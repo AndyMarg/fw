@@ -5,6 +5,9 @@ use vendor\core\Config;
 
 error_reporting(E_ALL);
 
+/**
+ * Корень приложения
+ */
 define('DIR_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
 $uri = rtrim($_SERVER['REQUEST_URI'],'/');
@@ -21,7 +24,8 @@ spl_autoload_register(function ($class) {
 
 // ******************** пользовательские маршруты ************************
 // пользоватедьские маршруты должны определяться ДО маршрутов по умолчанию
-Router::add('^/pages/?(?P<action>[a-z-]+)?$', ['controller' => 'PostsNew']);
+Router::add('^/page/(?P<action>[a-z-]+)/(?P<alias>[a-z-]+)$', ['controller' => 'Page']);
+Router::add('^/page/(?P<alias>[a-z-]+)$', ['controller' => 'Page', 'action' => 'view']);
 
 //**************** дефолтные маршруты ****************************
 // маршрут по умолчанию для пустого URI

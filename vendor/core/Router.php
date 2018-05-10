@@ -44,6 +44,19 @@ class Router
     }
 
     /**
+     * Удаляет из запроса подстроку с параметрами GET (от "/"  или "/?", включая эти символы)
+     *
+     * @param string $uri Полная строка URI
+     * @return string Очищенная строка
+     */
+    private static function removeQueryString($uri) {
+        if (preg_match("#([/]?\?)#", $uri, $matches, PREG_OFFSET_CAPTURE)) {
+            $uri = '/' . substr($uri,1, $matches[1][1]-1);
+        }
+        return $uri;
+    }
+
+    /**
      * Ищем маршрут по URI. Устанавливаем атрибут класса $route
      *
      * @param string $uri URI для поиска маршрута
@@ -79,6 +92,7 @@ class Router
      * @param string $uri URI для поиска маршрута
      */
     public static function dispatch($uri) {
+        $uri = self::removeQueryString($uri);
         if (self::matchRoute($uri)) {
             $controllerClass = 'app\\controllers\\' . self::$route['controller'];
             if (class_exists($controllerClass)) {
