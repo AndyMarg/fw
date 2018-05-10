@@ -8,15 +8,9 @@
 
 namespace app\controllers;
 
-
-use vendor\core\base\Controller;
-
-class Page extends Controller
+class Page extends AppController
 {
     public function viewAction() {
-        debug(__METHOD__, 'Вызов');
-        debug($this->getRoute(),'Current rout');
-        debug($_GET, 'GET parameters');
     }
 
 }

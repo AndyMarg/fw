@@ -2,12 +2,9 @@
 
 namespace app\controllers;
 
-use vendor\core\base\Controller;
-
-class Main extends Controller
+class Main extends AppController
 {
     public function indexAction() {
-        debug(__METHOD__, 'Вызов');
     }
 
 }
