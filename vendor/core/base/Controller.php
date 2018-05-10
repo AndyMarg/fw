@@ -11,11 +11,21 @@ abstract class Controller
     private $view;
     private $layout = Config::DEFAULT_LAYOUT;
 
-    public function __construct ($route)
+    /**
+     * @var array Пользовательские данные (доступны из шаблона и вида)
+     */
+    private $vars = [];
+
+    public function getLayout()
     {
-        $this->route = $route;
-        $this->view = $route['action'];
+        return $this->layout;
     }
+
+    public function setLayout($layout)
+    {
+        $this->layout = $layout;
+    }
+
 
     public function getRoute()
     {
@@ -25,7 +35,22 @@ abstract class Controller
     public function getView()
     {
        $v = new View($this->route, $this->layout, $this->view);
-       $v->render();
+       $v->render($this->vars);
+    }
+
+    public function setView($view)
+    {
+        $this->view = $view;
+    }
+
+    public function __construct ($route)
+    {
+        $this->route = $route;
+        $this->view = $route['action'];
+    }
+
+    public function setVars($vars) {
+        $this->vars = $vars;
     }
 
 }

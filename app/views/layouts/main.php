@@ -4,12 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/public/css/main.css">
-    <title>DEFAULT | <?= $title ?></title>
+    <title>MAIN</title>
 </head>
 
 <body>
-<h1>default layout</h1>
+<h1>main layout</h1>
 
 <?=$content?>
 

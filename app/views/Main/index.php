@@ -1,1 +1,5 @@
-<h1>Main::index.php view</h1>
+<code><?=__FILE__?></code>
+
+<br>
+<?="{$hi}, {$name}!"?>
+<?= debug($colors) ?>
