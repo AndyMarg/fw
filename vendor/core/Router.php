@@ -94,7 +94,7 @@ class Router
     public static function dispatch($uri) {
         $uri = self::removeQueryString($uri);
         if (self::matchRoute($uri)) {
-            $controllerClass = 'app\\controllers\\' . self::$route['controller'];
+            $controllerClass = 'app\\controllers\\' . self::$route['controller'] . 'Controller';
             if (class_exists($controllerClass)) {
                 $controller = new $controllerClass(self::$route);
                 $action = self::$route['action'] . 'Action';

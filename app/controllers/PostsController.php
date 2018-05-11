@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-class Posts extends AppController
+class PostsController extends AppController
 {
     public function indexAction() {
     }
