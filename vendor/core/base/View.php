@@ -24,7 +24,8 @@ class View
         $this->view = $view;
     }
 
-    public function render($vars) {
+    public function render($vars)
+    {
         // извлекаем переменные
         if (is_array($vars))
             extract($vars);
@@ -50,5 +51,6 @@ class View
             }
         }
     }
+
 
 }

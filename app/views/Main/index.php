@@ -8,7 +8,6 @@
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <?= debug(vendor\core\DB::getCountQueries(), 'Count queries') ?>
-    <?= debug(vendor\core\DB::getQueries(), 'Queries list') ?>
 </div>
+
 

@@ -31,20 +31,20 @@ class Db
         return self::$instance;
     }
 
-    public function execute($sql) {
+    public function execute($sql, $params = [])  {
         self::$countQueries++;
         self::$queries[] = $sql;
 
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute();
+        return $stmt->execute($params);
     }
 
-    public function query($sql) {
+    public function query($sql, $params = []) {
         self::$countQueries++;
         self::$queries[] = $sql;
 
         $stmt = $this->pdo->prepare($sql);
-        if (false !== $stmt->execute()) {
+        if (false !== $stmt->execute($params)) {
             return $stmt->fetchAll();
         }
         return [];

@@ -49,14 +49,26 @@ abstract class Model
 
     public function findById($id)
     {
-        $sql = "select * from {$this->table} where {$this->pk} = $id";
-        return $this->db->query($sql);
+        $sql = "select * from {$this->table} where {$this->pk} = ?";
+        return $this->db->query($sql, [$id]);
     }
 
-    public function findByName($field, $value, $numRows = 1)
+    public function findByName($field, $value, $numRows = -1)
     {
-        $sql = "select * from {$this->table} where $field  = $value limit $numRows";
-        return $this->db->query($sql);
+        $limit = (-1 === $numRows) ? "" : " limit $numRows";
+        $sql = "select * from {$this->table} where $field  = ? ?";
+        return $this->db->query($sql, [$value, $limit]);
+    }
+
+    public function findBySql($sql, $params = [])
+    {
+        return $this->db->query($sql, $params);
+    }
+
+    public function findByLike($pattern, $field)
+    {
+        $sql = "select * from {$this->table} where $field  like ?";
+        return $this->db->query($sql, ['%' .$pattern . '%']);
     }
 
 }
