@@ -9,8 +9,7 @@ class PageController extends AppController
     public function viewAction() {
         $model = new Main();
         $menu = $this->getMenu();
-        $meta = $this->getMeta();
-        $this->setVars(compact('meta', 'menu'));
+        $this->setVars(compact('menu'));
     }
 
 }
