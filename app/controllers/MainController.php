@@ -17,7 +17,7 @@ class MainController extends AppController
         // мета-данные возьмем из первого поста (для примера)
 //        $meta = \R::findOne('posts','id = 1');
 //        $this->setMeta($meta->title, $meta->description, $meta->keywords);
-        
+
         $this->setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
 
         $model = new Main();

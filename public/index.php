@@ -23,6 +23,9 @@ spl_autoload_register(function ($class) {
     }
 });
 
+$c = new Config();
+debug($c->getAll());
+
 // ******************** пользовательские маршруты ************************
 // пользоватедьские маршруты должны определяться ДО маршрутов по умолчанию
 Router::add('^/page/(?P<action>[a-z-]+)/(?P<alias>[a-z-]+)$', ['controller' => 'Page']);
