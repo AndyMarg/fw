@@ -2,26 +2,14 @@
 
 namespace vendor\core\base;
 
-use vendor\core\Config;
-
 class View
 {
-    private $route = [];
-    private $layout;
-    private $view;
+    private $controller;
 
-    public function __construct($route, $layout, $view = '')
+    public function __construct($controller)
     {
-        $this->route = $route;
-        // если $layout === false, то шаблон не выводится
-        if (false === $layout) {
-            $this->layout = false;
-        } else {
-            $this->layout = $layout ?: Config::DEFAULT_LAYOUT;
-        }
-
-        $this->layout = $layout;
-        $this->view = $view;
+        // контроллер, создавший вид
+        $this->controller = $controller;
     }
 
     public function render($vars)
@@ -30,8 +18,11 @@ class View
         if (is_array($vars))
             extract($vars);
 
+        // META INFO
+        $meta = $this->controller->getMeta();
+
         // подключаем вид (сохраняем буфер вывода в локальную переменную для последующего вывода в шаблоне)
-        $file_view = DIR_ROOT . "/app/views/{$this->route['controller']}/{$this->view}.php";
+        $file_view = DIR_ROOT . "/app/views/{$this->controller->getName()}/{$this->controller->getView()}.php";
         ob_start();
         if (is_file($file_view)) {
             require $file_view;
@@ -42,8 +33,8 @@ class View
 
         // подключаем и выводим шаблон (вид в шаблоне берется из локальной переменной)
         // если вывод шаблона и, соответственно, вида не заблокирован (нужно для AJAX)
-        if (false !== $this->layout) {
-            $file_layout = DIR_ROOT . "/app/views/layouts/{$this->layout}.php";
+        if (false !== $this->controller->getLayout()) {
+            $file_layout = DIR_ROOT . "/app/views/layouts/{$this->controller->getLayout()}.php";
             if (is_file($file_layout)) {
                 require $file_layout;
             } else {
@@ -51,6 +42,5 @@ class View
             }
         }
     }
-
 
 }

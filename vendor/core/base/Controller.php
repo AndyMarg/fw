@@ -8,8 +8,12 @@ use vendor\core\Config;
 abstract class Controller
 {
     private $route = [];
+    private $name;
     private $view;
     private $layout = Config::DEFAULT_LAYOUT;
+
+    // <META INFO> title, decription, frameworks
+    private $meta = [];
 
     /**
      * @var array Пользовательские данные (доступны из шаблона и вида)
@@ -32,9 +36,9 @@ abstract class Controller
         return $this->route;
     }
 
-    public function getView()
+    public function showView()
     {
-       $v = new View($this->route, $this->layout, $this->view);
+       $v = new View($this);
        $v->render($this->vars);
     }
 
@@ -43,10 +47,34 @@ abstract class Controller
         $this->view = $view;
     }
 
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setMeta($title = '', $description = '', $keywords = '')
+    {
+        $this->meta['title'] = $title;
+        $this->meta['description'] = $description;
+        $this->meta['keywords'] = $keywords;
+    }
+
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
     public function __construct ($route)
     {
         $this->route = $route;
+        $this->name = $route['controller'];
         $this->view = $route['action'];
+        $this->setMeta('Default title');
     }
 
     public function setVars($vars) {

@@ -15,13 +15,18 @@ class Db
 
     private function __construct()
     {
-        // настройки PDO
-        $connect_options = [
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,      // выдавать в поток вывода ошибки SQL
-            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC  // возвращать данные в виде ассоциативного (не нумерованного массива)
-        ];
-        // подключаемся к БД
-        $this->pdo = new \PDO(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS, $connect_options);
+        require_once DIR_ROOT . '/vendor/libs/rb-mysql.php';
+        \R::setup(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS);
+        \R::freeze(true);
+        //\R::fancyDebug(true);
+
+//        // настройки PDO
+//        $connect_options = [
+//            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,      // выдавать в поток вывода ошибки SQL
+//            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC  // возвращать данные в виде ассоциативного (не нумерованного массива)
+//        ];
+//        // подключаемся к БД
+//        $this->pdo = new \PDO(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS, $connect_options);
     }
 
     public static function instance() {

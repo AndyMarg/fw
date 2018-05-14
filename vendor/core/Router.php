@@ -100,7 +100,7 @@ class Router
                 $action = self::$route['action'] . 'Action';
                 if (method_exists($controller, $action)) {
                     $controller->$action();
-                    $controller->getView();
+                    $controller->showView();
                 } else {
                     echo "Метод <b>$controllerClass::$action</b> НЕ найден<br>";
                 }

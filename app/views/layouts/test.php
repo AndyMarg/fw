@@ -16,15 +16,7 @@
 
 <div class="container">
 
-    <!-- MENU -->
-    <?php if(!empty($menu)): ?>
-        <ul class="nav nav-pills">
-            <?php foreach ($menu as $item):  ?>
-                <li><a href="category/<?=$item['id']?>"><?=$item['name']?></a></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-
+    Здесь нет меню
     <h1>default layout</h1>
     <?=$content?>
 

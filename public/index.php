@@ -10,6 +10,7 @@ error_reporting(E_ALL);
  */
 define('DIR_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
+
 $uri = rtrim($_SERVER['REQUEST_URI'],'/');
 
 require_once '../vendor/libs/utils.php';

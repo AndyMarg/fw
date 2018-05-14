@@ -14,10 +14,17 @@ class MainController extends AppController
 
     public function indexAction()
     {
+        $this->setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
+
         $model = new Main();
-        $posts = $model->findAll();
-        $title = 'PAGE TITLE';
-        $this->setVars(compact('title', 'posts'));
+        $posts = \R::findAll('posts');
+        $menu = $this->getMenu();
+        $this->setVars(compact('posts', 'menu'));
+    }
+
+    public function testAction()
+    {
+        $this->setLayout('test');
     }
 
 }

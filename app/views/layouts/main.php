@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
-    <title>MAIN</title>
 
+    <title><?=$meta['title']?></title>
+    <meta name="description" content="<?=$meta['description']?>">
+    <meta name="keywords" content="<?=$meta['keywords']?>">
 </head>
 <body>
 
