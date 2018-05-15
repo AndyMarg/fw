@@ -3,8 +3,6 @@
 namespace vendor\core;
 
 
-use config\ConfigDB;
-
 class Db
 {
     private  $pdo;
@@ -15,10 +13,16 @@ class Db
 
     private function __construct()
     {
-        require_once DIR_ROOT . '/vendor/libs/rb-mysql.php';
-        \R::setup(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS);
+        $config = Config::instance();
+        require_once $config->getRoot() . '/vendor/libs/rb-mysql.php';
+        \R::setup(
+                $config->get('database', 'dns'),
+                $config->get('database', 'user'),
+                $config->get('database', 'pass')
+        );
         \R::freeze(true);
         //\R::fancyDebug(true);
+
 
 //        // настройки PDO
 //        $connect_options = [
@@ -27,6 +31,7 @@ class Db
 //        ];
 //        // подключаемся к БД
 //        $this->pdo = new \PDO(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS, $connect_options);
+
     }
 
     public static function instance() {

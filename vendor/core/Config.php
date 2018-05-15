@@ -2,14 +2,6 @@
 
 namespace vendor\core;
 
-
-//spl_autoload_register(function ($class) {
-//    $file = str_replace('\\', '/', $class) . '.php';
-//    if(is_file($file)) {
-//        require_once $file;
-//    }
-//});
-
 /**
  * Class Config Конфигурация фреймворка
  */
@@ -21,20 +13,43 @@ class Config
 
     private $registry = [];
 
-    private $classes = [
-        'cache' => 'vendor\core\Cache',
-        'test' => 'vendor\core\Test'
-    ];
+    private $root = 'UNDEFINED';
 
-    public function __construct()
+    private static $instance = null;
+
+    private function __construct()
     {
-        $this->loadClasses($this->classes);
+        // функция автозагрузки
+        spl_autoload_register(function ($class) {
+            $file = $this->root . '/' . str_replace('\\', '/', $class) . '.php';
+            if(is_file($file)) {
+                require_once $file;
+            }
+        });
+    }
+
+    public static  function instance()
+    {
+        if (null === self::$instance) {
+            self::$instance = new self;
+        }
+        return self::$instance;
+    }
+
+    public function setRoot($root)
+    {
+        $this->root = $root;
+    }
+
+    public function getRoot()
+    {
+        return $this->root;
     }
 
     public function loadClasses(Array $classes)
     {
         foreach ($classes as $key => $class) {
-            self::set('components', $key, $class);
+            self::set('components', $key, new $class);
         }
     }
 
@@ -43,11 +58,25 @@ class Config
         if (empty($this->registry[$section])) {
             $this->registry[$section] = [];
         }
-        $this->registry[$section][$name] = new $value;
+        $this->registry[$section][$name] = $value;
     }
 
-    public function getAll() {
+    public function get($section, $name)
+    {
+        return $this->registry[$section][$name];
+    }
+
+    public function setDB($dns, $user, $pass)
+    {
+        $this->set('database','dns', $dns);
+        $this->set('database','user', $user);
+        $this->set('database','pass', $pass);
+    }
+
+    public function getRegistry() {
         return $this->registry;
     }
+
+
 
 }

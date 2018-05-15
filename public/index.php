@@ -1,30 +1,17 @@
 <?php
 
+require_once '../vendor/libs/utils.php';
+require_once '../vendor/core/init.php';
+
 use vendor\core\Router;
 use vendor\core\Config;
+use config\ConfigDB;
 
 error_reporting(E_ALL);
 
-/**
- * Корень приложения
- */
-define('DIR_ROOT', $_SERVER['DOCUMENT_ROOT']);
-
-
-$uri = rtrim($_SERVER['REQUEST_URI'],'/');
-
-require_once '../vendor/libs/utils.php';
-
-// функция автозагрузки
-spl_autoload_register(function ($class) {
-    $file = DIR_ROOT . '/' . str_replace('\\', '/', $class) . '.php';
-    if(is_file($file)) {
-        require_once $file;
-    }
-});
-
-$c = new Config();
-debug($c->getAll());
+// инициализация и конфигурация фреймворка
+Init($_SERVER['DOCUMENT_ROOT']);
+Config::instance()->setDB(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS);
 
 // ******************** пользовательские маршруты ************************
 // пользоватедьские маршруты должны определяться ДО маршрутов по умолчанию
@@ -37,5 +24,7 @@ Router::add('^$', ['controller' => Config::DEFAULT_CONTROLLER, 'action' => Confi
 // маршрут по умолчанию для URI в формате /controller/action
 Router::add('^/(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$');
 
+$uri = rtrim($_SERVER['REQUEST_URI'],'/');
 Router::dispatch($uri);
+
 
