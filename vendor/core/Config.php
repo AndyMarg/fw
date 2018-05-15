@@ -19,13 +19,6 @@ class Config
 
     private function __construct()
     {
-        // функция автозагрузки
-        spl_autoload_register(function ($class) {
-            $file = $this->root . '/' . str_replace('\\', '/', $class) . '.php';
-            if(is_file($file)) {
-                require_once $file;
-            }
-        });
     }
 
     public static  function instance()
@@ -76,7 +69,5 @@ class Config
     public function getRegistry() {
         return $this->registry;
     }
-
-
 
 }
