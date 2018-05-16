@@ -28,7 +28,7 @@ function Init($root)
 
 
     // временная отладка
-    $auto = \vendor\core\AutoObjects::instance();
+    $auto = \vendor\core\ObjectRegistry::instance();
     $auto->addFromArray([
         'cache' => 'vendor\core\Cache'
     ]);

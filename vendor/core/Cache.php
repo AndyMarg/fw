@@ -5,5 +5,4 @@ namespace vendor\core;
 
 class Cache
 {
-
 }
