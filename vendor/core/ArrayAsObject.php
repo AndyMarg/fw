@@ -5,10 +5,10 @@ namespace vendor\core;
 /**
  * Доступ к ассоциатовному массиву как к объекту. Ключи представлены как свойства объекта.
  *
- * Class ArrayObject
+ * Class ArrayAsObject
  * @package vendor\core
  */
-class ArrayObject
+class ArrayAsObject
 {
     private $data = [];
 
@@ -25,7 +25,6 @@ class ArrayObject
      */
     public function __get($name)
     {
-        debug($name);
         if (array_key_exists($name, $this->data)) {
             return $this->data[$name];
         }

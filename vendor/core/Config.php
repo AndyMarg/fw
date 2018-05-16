@@ -31,9 +31,23 @@ class Config
         return self::$instance;
     }
 
+    private function addArrayToRegistry($parent, $arr)
+    {
+        debug($parent, 'parent');
+        debug($arr, 'child');
+        foreach ($arr as $name => $value) {
+            if(is_array($value)) {
+                $this->addArrayToRegistry($arr, $value);
+            } else {
+                $parent[$name] = $value;
+            }
+        }
+    }
+    
     public function init(array $app_config_data) {
         require_once 'config_data.php';
-        $this->registry = array_merge_recursive($app_config_data, $config_data);
+        $all_config_data = array_merge_recursive($app_config_data, $_config_data);
+        $this->addArrayToRegistry($this->registry, $all_config_data);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-$config_data = [
+$_config_data = [
     'objects' => [
         'cache' => 'vendor\core\Cache'
     ]
