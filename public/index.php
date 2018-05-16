@@ -2,6 +2,7 @@
 
 require_once '../vendor/libs/utils.php';
 require_once '../vendor/core/init.php';
+require_once '../config/app_config.php';
 
 use vendor\core\Router;
 use vendor\core\Config;
@@ -10,7 +11,7 @@ use config\ConfigDB;
 error_reporting(E_ALL);
 
 // инициализация и конфигурация фреймворка
-Init($_SERVER['DOCUMENT_ROOT']);
+Init($_SERVER['DOCUMENT_ROOT'], $app_config_data);
 Config::instance()->setDB(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS);
 
 // ******************** пользовательские маршруты ************************

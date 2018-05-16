@@ -38,7 +38,7 @@ class ObjectRegistry
         if (array_key_exists($name, $this->objects)) {
             return $this->objects[$name];
         }
-        trigger_error("No defined auto created object: \"$name\"", E_USER_NOTICE);
+        trigger_error("Not defined auto created object: \"$name\"", E_USER_NOTICE);
         return null;
     }
 
@@ -51,8 +51,12 @@ class ObjectRegistry
      */
     public function __set($name, $object)
     {
-        if (is_object($object)) {
-            $this->objects[$name] = $object;
+        if (!array_key_exists($name, $this->objects)) {
+            if (is_object($object)) {
+                $this->objects[$name] = $object;
+            }
+        } else {
+            trigger_error("Object \"$name\" already created before", E_USER_NOTICE);
         }
     }
 

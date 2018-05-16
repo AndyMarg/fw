@@ -7,10 +7,12 @@ require_once '../vendor/core/Config.php';
  *
  * @param string $root Путь к корню приложения
  */
-function Init($root)
+function Init($root, $app_config_data)
 {
     $config = \vendor\core\Config::instance();
     $config->setRoot($root);
+    $config->init($app_config_data);
+    //debug($config->app);
 
     // функция автозагрузки
     spl_autoload_register(function ($class) {
@@ -21,11 +23,8 @@ function Init($root)
         }
     });
 
-    // создаем объекты заранее для последующего использования фреймворком
-    $config->loadClasses([
-        'cache' => 'vendor\core\Cache'
-    ]);
-
+    $a = new ArrayObject($app_config_data['db']);
+    debug($a->dns);
 
     // временная отладка
     $auto = \vendor\core\ObjectRegistry::instance();

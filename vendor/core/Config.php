@@ -1,5 +1,6 @@
 <?php
 
+
 namespace vendor\core;
 
 /**
@@ -12,13 +13,14 @@ class Config
     const DEFAULT_LAYOUT = 'default';
 
     private $registry = [];
+    //private $objectRegistry;
 
     private $root = 'UNDEFINED';
 
     private static $instance = null;
 
-    private function __construct()
-    {
+    private function __construct() {
+        //$this->objectRegistry = \vendor\core\ObjectRegistry::instance();
     }
 
     public static  function instance()
@@ -27,6 +29,27 @@ class Config
             self::$instance = new self;
         }
         return self::$instance;
+    }
+
+    public function init(array $app_config_data) {
+        require_once 'config_data.php';
+        $this->registry = array_merge_recursive($app_config_data, $config_data);
+    }
+
+    /**
+     * "Магический метод". Вызывается при получении неизвестного свойства.
+     * Возвращает массив настроек раздела конфигурации, если существует, иначе ошибка.
+     *
+     * @param string $name Имя раздела конфигурации
+     * @return mixed|null Объект
+     */
+    public function __get($section)
+    {
+        if (array_key_exists($section, $this->registry)) {
+            return $this->registry[$section];
+        }
+        trigger_error("Not such section in configuration: \"$section\"", E_USER_NOTICE);
+        return null;
     }
 
     public function setRoot($root)
@@ -39,16 +62,9 @@ class Config
         return $this->root;
     }
 
-    public function loadClasses(Array $classes)
-    {
-        foreach ($classes as $key => $class) {
-            self::set('components', $key, new $class);
-        }
-    }
-
     public function set($section, $name, $value)
     {
-        if (empty($this->registry[$section])) {
+        if (!array_key_exists($section, $this->registry)) {
             $this->registry[$section] = [];
         }
         $this->registry[$section][$name] = $value;
