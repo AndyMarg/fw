@@ -1,28 +1,29 @@
 <?php
 
-
 namespace vendor\core;
 
 /**
- * Class Config Конфигурация фреймворка
+ * Class Config Конфигурация фреймворка (синглетон)
+ * Доступ ко многим свойствам - через магические методы к массиву $registry.
+ * Подмассивы в $registry представлены как объекты класса ArrayAsObject,
+ * то есть доступ к элементам подмассивов возможен как к свойствам
  */
 class Config
 {
-    const DEFAULT_CONTROLLER = 'Main';
-    const DEFAULT_ACTION = 'index';
-    const DEFAULT_LAYOUT = 'default';
-
-    private $registry = [];
+    private $registry = [];             // массив для хранения конфигурации и доступа к элементам как к свойствам
     //private $objectRegistry;
+    private $_root = 'UNDEFINED';       // путь к корню приложения
+    private static $instance = null;    // для синглетона
 
-    private $root = 'UNDEFINED';
-
-    private static $instance = null;
 
     private function __construct() {
         //$this->objectRegistry = \vendor\core\ObjectRegistry::instance();
     }
 
+    /**
+     * Для синглетона
+     * @return object Данный объект
+     */
     public static  function instance()
     {
         if (null === self::$instance) {
@@ -31,23 +32,50 @@ class Config
         return self::$instance;
     }
 
-    private function addArrayToRegistry($parent, $arr)
+    /**
+     * Рекурсивный метод для добавления подмассивов (элементов) к $registry
+     *
+     * @param array $parent   Родительский элемен
+     * @param array $child    Дочерний подмассив
+     * @return mixed          Объект типа ArrayAsObject
+     */
+    private function addArrayToRegistry($parent, $child)
     {
-        debug($parent, 'parent');
-        debug($arr, 'child');
-        foreach ($arr as $name => $value) {
+        foreach ($child as $name => $value) {
             if(is_array($value)) {
-                $this->addArrayToRegistry($arr, $value);
+                $parent[$name] = [];
+                $next_array_as_object = $this->addArrayToRegistry($parent[$name], $value);
+                $parent[$name] = new ArrayAsObject($next_array_as_object);
             } else {
-                $parent[$name] = $value;
+                $parent[$name]  = $value;
             }
         }
+        return $parent;
     }
-    
+
+    /**
+     * Инициализация фреймворка (должен быть первым методом из фреймворка вызываемом в приложении)
+     *
+     * @param array $app_config_data  Массив пользовательской конфигурации
+     */
     public function init(array $app_config_data) {
+        // устанавливаем путь к корню приложения (для работы функции автозагрузки классов)
+        $this->_root = $app_config_data['root'];
+
+        // функция автозагрузки
+        spl_autoload_register(function ($class) {
+            $file = $this->getRoot() . '/' . str_replace('\\', '/', $class) . '.php';
+            if(is_file($file)) {
+                require_once $file;
+            }
+        });
+
+        // массив системной конфигурации
         require_once 'config_data.php';
+        // объединяем пользовательскую и системную конфингурацию
         $all_config_data = array_merge_recursive($app_config_data, $_config_data);
-        $this->addArrayToRegistry($this->registry, $all_config_data);
+        // формируем реестр конфигурации
+        $this->registry = $this->addArrayToRegistry($this->registry, $all_config_data);
     }
 
     /**
@@ -57,45 +85,26 @@ class Config
      * @param string $name Имя раздела конфигурации
      * @return mixed|null Объект
      */
-    public function __get($section)
+    public function __get($name)
     {
-        if (array_key_exists($section, $this->registry)) {
-            return $this->registry[$section];
+        if (array_key_exists($name, $this->registry)) {
+            return $this->registry[$name];
         }
-        trigger_error("Not such section in configuration: \"$section\"", E_USER_NOTICE);
+        trigger_error("Not such item in configuration: \"$name\"", E_USER_NOTICE);
         return null;
     }
 
-    public function setRoot($root)
-    {
-        $this->root = $root;
-    }
-
+    /**
+     * @return string Путь к корню приложения
+     */
     public function getRoot()
     {
-        return $this->root;
+        return $this->_root;
     }
 
-    public function set($section, $name, $value)
-    {
-        if (!array_key_exists($section, $this->registry)) {
-            $this->registry[$section] = [];
-        }
-        $this->registry[$section][$name] = $value;
-    }
-
-    public function get($section, $name)
-    {
-        return $this->registry[$section][$name];
-    }
-
-    public function setDB($dns, $user, $pass)
-    {
-        $this->set('database','dns', $dns);
-        $this->set('database','user', $user);
-        $this->set('database','pass', $pass);
-    }
-
+    /**
+     * @return array Реестр конфигурации
+     */
     public function getRegistry() {
         return $this->registry;
     }

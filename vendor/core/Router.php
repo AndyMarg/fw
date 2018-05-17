@@ -75,7 +75,7 @@ class Router
                 $route['controller'] = str_replace('-', '', ucwords($route['controller'], '-'));
                 // если action не определен - устанавливаем по умолчанию
                 if (!isset($route['action'])) {
-                    $route['action'] = Config::DEFAULT_ACTION;
+                    $route['action'] = Config::instance()->defaults->action;
                 }
                 // преобразуем формат названия контроллера из first-second-third в firstSecondThird
                 $route['action'] = lcfirst(str_replace('-', '', ucwords($route['action'], '-')));

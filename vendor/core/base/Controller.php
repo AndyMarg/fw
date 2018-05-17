@@ -10,7 +10,7 @@ abstract class Controller
     private $route = [];
     private $name;
     private $view;
-    private $layout = Config::DEFAULT_LAYOUT;
+    private $layout;
 
     // <META INFO> title, decription, frameworks
     private $meta = [];
@@ -74,6 +74,7 @@ abstract class Controller
         $this->route = $route;
         $this->name = $route['controller'];
         $this->view = $route['action'];
+        $this->layout = Config::instance()->defaults->layout;
         $this->setMeta('Default title');
     }
 

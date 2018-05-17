@@ -14,12 +14,8 @@ class Db
     private function __construct()
     {
         $config = Config::instance();
-        require_once $config->getRoot() . '/vendor/libs/rb-mysql.php';
-        \R::setup(
-                $config->get('database', 'dns'),
-                $config->get('database', 'user'),
-                $config->get('database', 'pass')
-        );
+        require_once $config->root . '/vendor/libs/rb-mysql.php';
+        \R::setup($config->db->dns, $config->db->user, $config->db->pass);
         \R::freeze(true);
         //\R::fancyDebug(true);
 

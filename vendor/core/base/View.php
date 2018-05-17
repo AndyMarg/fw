@@ -24,7 +24,7 @@ class View
         $meta = $this->controller->getMeta();
 
         // подключаем вид (сохраняем буфер вывода в локальную переменную для последующего вывода в шаблоне)
-        $file_view = Config::instance()->getRoot() . "/app/views/{$this->controller->getName()}/{$this->controller->getView()}.php";
+        $file_view = Config::instance()->root . "/app/views/{$this->controller->getName()}/{$this->controller->getView()}.php";
         ob_start();
         if (is_file($file_view)) {
             require $file_view;
@@ -36,7 +36,7 @@ class View
         // подключаем и выводим шаблон (вид в шаблоне берется из локальной переменной)
         // если вывод шаблона и, соответственно, вида не заблокирован (нужно для AJAX)
         if (false !== $this->controller->getLayout()) {
-            $file_layout = Config::instance()->getRoot() . "/app/views/layouts/{$this->controller->getLayout()}.php";
+            $file_layout = Config::instance()->root . "/app/views/layouts/{$this->controller->getLayout()}.php";
             if (is_file($file_layout)) {
                 require $file_layout;
             } else {
