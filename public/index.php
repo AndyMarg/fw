@@ -13,6 +13,9 @@ error_reporting(E_ALL);
 $config = Config::instance();
 $config->init($app_config_data);
 
+Config::instance()->getCache()->set(null, null);
+
+
 // ******************** пользовательские маршруты ************************
 // пользоватедьские маршруты должны определяться ДО маршрутов по умолчанию
 Router::add('^/page/(?P<action>[a-z-]+)/(?P<alias>[a-z-]+)$', ['controller' => 'Page']);

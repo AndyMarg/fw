@@ -14,6 +14,7 @@ class Config
     private $objectRegistry;            // реестр заранее созданных объектов
     private $_root = 'UNDEFINED';       // путь к корню приложения
     private static $instance = null;    // для синглетона
+    private $cache;                     // менеджер кэша
 
     private function __construct() {}
 
@@ -75,7 +76,14 @@ class Config
 
         // создаем реестр загружаемых объектов и заполняем его на основе конфигурации
         $this->objectRegistry = ObjectRegistry::instance();
-        $this->objectRegistry->addFromArray($this->objects->getData());
+        if (isset($this->objects)) {
+            $this->objectRegistry->addFromArray($this->objects->getData());
+        }
+
+        // создаем менеджер кэша
+        if (isset($this->objectRegistry->cache)) {
+            $this->cache = $this->objectRegistry->cache;
+        }
     }
 
     /**
@@ -92,6 +100,16 @@ class Config
         }
         trigger_error("Not such item in configuration: \"$name\"", E_USER_NOTICE);
         return null;
+    }
+
+    /**
+     * "Магический метод". Вызывается при проверке существования свойства
+     * @param string $name Ключ массива
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return isset($this->registry[$name]);
     }
 
     /**
@@ -115,6 +133,14 @@ class Config
     public function getObjectRegistry()
     {
         return $this->objectRegistry;
+    }
+
+    /**
+     * @return mixed Возвращает менеджер кэша
+     */
+    public function getCache()
+    {
+        return $this->cache;
     }
 
 }

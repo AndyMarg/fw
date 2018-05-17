@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Main;
+use vendor\core\Config;
 
 class MainController extends AppController
 {
@@ -15,13 +16,14 @@ class MainController extends AppController
     public function indexAction()
     {
         // мета-данные возьмем из первого поста (для примера)
-//        $meta = \R::findOne('posts','id = 1');
-//        $this->setMeta($meta->title, $meta->description, $meta->keywords);
+        // $meta = \R::findOne('posts','id = 1');
+        // $this->setMeta($meta->title, $meta->description, $meta->keywords);
 
         $this->setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
 
         $model = new Main();
         $posts = \R::findAll('posts');
+        Config::instance()->getCache()->set('posts', $posts);
         $menu = $this->getMenu();
         $this->setVars(compact('posts', 'menu'));
     }
