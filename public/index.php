@@ -1,7 +1,7 @@
 <?php
 
 require_once '../vendor/libs/utils.php';    // утилиты для отладки
-require_once '../config/app_config.php';    // массив с конфигурацией фрейймворка
+require_once '../config/app_config.php';    // массив с пользовательской конфигурацией фрейймворка
 require_once '../vendor/core/Config.php';   // Менеджер конфигурации
 
 use vendor\core\Router;

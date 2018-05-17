@@ -11,14 +11,11 @@ namespace vendor\core;
 class Config
 {
     private $registry = [];             // массив для хранения конфигурации и доступа к элементам как к свойствам
-    //private $objectRegistry;
+    private $objectRegistry;            // реестр заранее созданных объектов
     private $_root = 'UNDEFINED';       // путь к корню приложения
     private static $instance = null;    // для синглетона
 
-
-    private function __construct() {
-        //$this->objectRegistry = \vendor\core\ObjectRegistry::instance();
-    }
+    private function __construct() {}
 
     /**
      * Для синглетона
@@ -58,8 +55,7 @@ class Config
      *
      * @param array $app_config_data  Массив пользовательской конфигурации
      */
-    public function init(array $app_config_data) {
-        // устанавливаем путь к корню приложения (для работы функции автозагрузки классов)
+    public function init(array $app_config_data) {        // устанавливаем путь к корню приложения (для работы функции автозагрузки классов)
         $this->_root = $app_config_data['root'];
 
         // функция автозагрузки
@@ -76,6 +72,10 @@ class Config
         $all_config_data = array_merge_recursive($app_config_data, $_config_data);
         // формируем реестр конфигурации
         $this->registry = $this->addArrayToRegistry($this->registry, $all_config_data);
+
+        // создаем реестр загружаемых объектов и заполняем его на основе конфигурации
+        $this->objectRegistry = ObjectRegistry::instance();
+        $this->objectRegistry->addFromArray($this->objects->getData());
     }
 
     /**
@@ -107,6 +107,14 @@ class Config
      */
     public function getRegistry() {
         return $this->registry;
+    }
+
+    /**
+     * @return mixed Реестр загруженных объектов
+     */
+    public function getObjectRegistry()
+    {
+        return $this->objectRegistry;
     }
 
 }
