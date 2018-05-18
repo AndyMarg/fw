@@ -27,8 +27,8 @@ class MainController extends AppController
         if (!$posts) {
             // получаем данные из базы
             $posts = \R::findAll('posts');
-            // соэраняем в кэше на 10 минут
-            Config::instance()->getCache()->set('posts', $posts, 60*10);
+            // соэраняем в кэше на 1 минуту
+            Config::instance()->getCache()->set('posts', $posts, 60);
         }
 
         $menu = $this->getMenu();
@@ -37,6 +37,11 @@ class MainController extends AppController
 
     public function testAction()
     {
+        if($this->isAjax()) {
+            echo 111;
+            die;
+        }
+        echo 222;
         $this->setLayout('test');
     }
 
