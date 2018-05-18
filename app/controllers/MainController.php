@@ -2,7 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Main;
+// use app\models\Main;
+use vendor\core\base\View;
 use vendor\core\Config;
 
 class MainController extends AppController
@@ -17,7 +18,7 @@ class MainController extends AppController
     {
         $this->setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
 
-        $model = new Main();
+        //$model = new Main();
 
         // пример работы с кэшем !!!!!!!!!!!!
 
@@ -38,7 +39,9 @@ class MainController extends AppController
     public function testAction()
     {
         if($this->isAjax()) {
-            echo 111;
+            //$model = new Main();
+            $post = \R::findOne('posts', "id = {$_POST['id']}");
+            echo View::getViewContent($this, 'test', compact('post'));
             die;
         }
         echo 222;

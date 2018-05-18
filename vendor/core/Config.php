@@ -57,7 +57,7 @@ class Config
      * @param array $app_config_data  Массив пользовательской конфигурации
      */
     public function init(array $app_config_data) {        // устанавливаем путь к корню приложения (для работы функции автозагрузки классов)
-        $this->_root = $app_config_data['root'];
+        $this->_root = ROOT;
 
         // функция автозагрузки
         spl_autoload_register(function ($class) {

@@ -20,6 +20,15 @@ abstract class Controller
      */
     private $vars = [];
 
+    public function __construct ($route)
+    {
+        $this->route = $route;
+        $this->name = $route['controller'];
+        $this->view = $route['action'];
+        $this->layout = Config::instance()->defaults->layout;
+        $this->setMeta('Default title');
+    }
+
     public function getLayout()
     {
         return $this->layout;
@@ -67,15 +76,6 @@ abstract class Controller
     public function getMeta()
     {
         return $this->meta;
-    }
-
-    public function __construct ($route)
-    {
-        $this->route = $route;
-        $this->name = $route['controller'];
-        $this->view = $route['action'];
-        $this->layout = Config::instance()->defaults->layout;
-        $this->setMeta('Default title');
     }
 
     public function setVars($vars) {

@@ -3,12 +3,15 @@
 /**
  * Пользовательская конфигурация (элемент root - ОБЯЗАТЕЛЕН!)
  */
+define('ROOT', $_SERVER['DOCUMENT_ROOT']);
+
 $app_config_data = [
-    'root' => $_SERVER['DOCUMENT_ROOT'],
+    'root' => ROOT,
 
     'path' => [
-        'temp' => $_SERVER['DOCUMENT_ROOT'] . '/tmp',
-        'cache' => $_SERVER['DOCUMENT_ROOT'] . '/tmp/cache'
+        'temp' => ROOT . '/tmp',
+        'cache' => ROOT . '/tmp/cache',
+        'views' => ROOT . '/app/views'
     ],
 
     'db' => [

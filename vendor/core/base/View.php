@@ -22,6 +22,32 @@ class View
         $this->controller = $controller;
     }
 
+    /**
+     * Возвращает контент любого вида для любого контроллера
+     * При этом переменные и настройки беруться из текущего контроллера.
+     *
+     * @param object $controller Текущий контроллер
+     * @param string $view Вид для рендеринга
+     * @param array $vars Массив переменных
+     * @return string Контент вида
+     */
+    public static function getViewContent($controller, $view, $vars)
+    {
+        // извлекаем переменные
+        if (is_array($vars))
+            extract($vars);
+
+        // подключаем вид (сохраняем буфер вывода в локальную переменную для последующего вывода в шаблоне)
+        $file_view = Config::instance()->path->views . "/{$controller->getName()}/{$view}.php";
+        ob_start();
+        if (is_file($file_view)) {
+            require $file_view;
+        } else {
+            echo "Не найден вид <b>{$file_view}</b><br>";
+        }
+        return ob_get_clean();
+    }
+
     /***
      * Рендеринг страницы
      *
@@ -29,22 +55,15 @@ class View
      */
     public function render($vars)
     {
+        // META INFO
+        $meta = $this->controller->getMeta();
+
         // извлекаем переменные
         if (is_array($vars))
             extract($vars);
 
-        // META INFO
-        $meta = $this->controller->getMeta();
-
-        // подключаем вид (сохраняем буфер вывода в локальную переменную для последующего вывода в шаблоне)
-        $file_view = Config::instance()->root . "/app/views/{$this->controller->getName()}/{$this->controller->getView()}.php";
-        ob_start();
-        if (is_file($file_view)) {
-            require $file_view;
-        } else {
-            echo "Не найден вид <b>{$file_view}</b><br>";
-        }
-        $content = ob_get_clean();
+        // получаем контент вида в переменую
+        $content = self::getViewContent($this->controller, $this->controller->getView(), $vars);
 
         // подключаем и выводим шаблон (вид в шаблоне берется из локальной переменной)
         // если вывод шаблона и, соответственно, вида не заблокирован (нужно для AJAX)
