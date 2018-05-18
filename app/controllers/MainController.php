@@ -15,15 +15,22 @@ class MainController extends AppController
 
     public function indexAction()
     {
-        // мета-данные возьмем из первого поста (для примера)
-        // $meta = \R::findOne('posts','id = 1');
-        // $this->setMeta($meta->title, $meta->description, $meta->keywords);
-
         $this->setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
 
         $model = new Main();
-        $posts = \R::findAll('posts');
-        Config::instance()->getCache()->set('posts', $posts);
+
+        // пример работы с кэшем !!!!!!!!!!!!
+
+        // пробуем получить данные из кэша
+        $posts = Config::instance()->getCache()->get('posts');
+        // если данных в кэше нет (либо еще не созданы, либо кэш удален по причине устаревания)
+        if (!$posts) {
+            // получаем данные из базы
+            $posts = \R::findAll('posts');
+            // соэраняем в кэше на 10 минут
+            Config::instance()->getCache()->set('posts', $posts, 60*10);
+        }
+
         $menu = $this->getMenu();
         $this->setVars(compact('posts', 'menu'));
     }
