@@ -2,6 +2,8 @@
 
 namespace vendor\core;
 
+require_once 'TSingleton.php';
+
 /**
  * Class Config Конфигурация фреймворка (синглетон)
  * Доступ ко многим свойствам - через магические методы к массиву $registry.
@@ -10,25 +12,14 @@ namespace vendor\core;
  */
 class Config
 {
+    use TSingleton;
+
     private $registry = [];             // массив для хранения конфигурации и доступа к элементам как к свойствам
     private $objectRegistry;            // реестр заранее созданных объектов
     private $_root = 'UNDEFINED';       // путь к корню приложения
-    private static $instance = null;    // для синглетона
     private $cache;                     // менеджер кэша
 
     private function __construct() {}
-
-    /**
-     * Для синглетона
-     * @return object Данный объект
-     */
-    public static  function instance()
-    {
-        if (null === self::$instance) {
-            self::$instance = new self;
-        }
-        return self::$instance;
-    }
 
     /**
      * Рекурсивный метод для добавления подмассивов (элементов) к $registry
@@ -71,6 +62,7 @@ class Config
         require_once 'config_data.php';
         // объединяем пользовательскую и системную конфингурацию
         $all_config_data = array_merge_recursive($app_config_data, $_config_data);
+        debug($all_config_data);
         // формируем реестр конфигурации
         $this->registry = $this->addArrayToRegistry($this->registry, $all_config_data);
 

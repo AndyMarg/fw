@@ -7,11 +7,13 @@ require_once '../vendor/core/Config.php';   // Менеджер конфигур
 use vendor\core\Router;
 use vendor\core\Config;
 
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 
 // инициализация и конфигурация фреймворка
 $config = Config::instance();
 $config->init($app_config_data);
+
+//debug($config->debug->debugging);
 
 // ******************** пользовательские маршруты ************************
 // пользоватедьские маршруты должны определяться ДО маршрутов по умолчанию
@@ -26,5 +28,3 @@ Router::add('^/(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$');
 
 $uri = rtrim($_SERVER['REQUEST_URI'],'/');
 Router::dispatch($uri);
-
-

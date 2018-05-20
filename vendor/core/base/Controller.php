@@ -12,9 +12,6 @@ abstract class Controller
     private $view;
     private $layout;
 
-    // <META INFO> title, decription, frameworks
-    private $meta = [];
-
     /**
      * @var array Пользовательские данные (доступны из шаблона и вида)
      */
@@ -26,7 +23,6 @@ abstract class Controller
         $this->name = $route['controller'];
         $this->view = $route['action'];
         $this->layout = Config::instance()->defaults->layout;
-        $this->setMeta('Default title');
     }
 
     public function getLayout()
@@ -64,18 +60,6 @@ abstract class Controller
     public function getName()
     {
         return $this->name;
-    }
-
-    public function setMeta($title = '', $description = '', $keywords = '')
-    {
-        $this->meta['title'] = $title;
-        $this->meta['description'] = $description;
-        $this->meta['keywords'] = $keywords;
-    }
-
-    public function getMeta()
-    {
-        return $this->meta;
     }
 
     public function setVars($vars) {

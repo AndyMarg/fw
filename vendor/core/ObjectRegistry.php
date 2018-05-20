@@ -11,20 +11,11 @@ namespace vendor\core;
  */
 class ObjectRegistry
 {
+    use TSingleton;
+
     private $objects = [];
-    private static $instance;
 
     private function __construct() {}
-
-    /**
-     * @return ObjectRegistry Синглетон
-     */
-        public static function instance() {
-        if (null === self::$instance) {
-            self::$instance = new self;
-        }
-        return self::$instance;
-    }
 
     /**
      * "Магический метод". Вызывается при получении неизвестного свойства.

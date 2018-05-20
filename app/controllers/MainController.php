@@ -16,7 +16,7 @@ class MainController extends AppController
 
     public function indexAction()
     {
-        $this->setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
+        View::setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
 
         //$model = new Main();
 
@@ -41,10 +41,9 @@ class MainController extends AppController
         if($this->isAjax()) {
             //$model = new Main();
             $post = \R::findOne('posts', "id = {$_POST['id']}");
-            echo View::getViewContent($this, 'test', compact('post'));
+            echo View::getViewContent($this, 'a_test', compact('post'));
             die;
         }
-        echo 222;
         $this->setLayout('test');
     }
 

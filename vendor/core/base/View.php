@@ -16,10 +16,47 @@ class View
      */
     private $scripts = [];
 
+    // <META INFO> title, decription, frameworks
+    private static $meta = ['title' => 'Default title', 'description' => '', 'keywords' => ''];
+
     public function __construct($controller)
     {
         // контроллер, создавший вид
         $this->controller = $controller;
+    }
+
+    /**
+     * Установить мета-данные страницы
+     *
+     * @param string $title Заголовор
+     * @param string $description Описание
+     * @param string $keywords Ключевые слова
+     */
+    public static function setMeta($title = '', $description = '', $keywords = '')
+    {
+        if (!empty($title)) self::$meta['title'] = $title;
+        if (!empty($description)) self::$meta['description'] = $description;
+        if (!empty($keywords)) self::$meta['keywords'] = $keywords;
+    }
+
+    /**
+     * @return array Возвращает массив мета-данных страницы
+     */
+    public static function getMeta()
+    {
+        return self::$meta;
+    }
+
+    /**
+     * Выводит HTML с метаданными страницы
+     */
+    public static function printMeta()
+    {
+        echo '<title>' . self::$meta['title'] . '</title>' . "\n";
+        if (!empty(self::$meta['description']))
+            echo '<meta name="description" content="' . self::$meta['description'] . '">' . "\n";
+        if (!empty(self::$meta['keywords']))
+            echo '<meta name="keywords" content="' . self::$meta['keywords'] . '">' . "\n";
     }
 
     /**
@@ -55,9 +92,6 @@ class View
      */
     public function render($vars)
     {
-        // META INFO
-        $meta = $this->controller->getMeta();
-
         // извлекаем переменные
         if (is_array($vars))
             extract($vars);

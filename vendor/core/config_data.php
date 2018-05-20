@@ -13,5 +13,10 @@ $_config_data = [
         'controller' => 'Main',
         'action' => 'index',
         'layout' => 'default'
+    ],
+    'debug' => [
+        'debugging' => 1,
+        'logging' => 0
     ]
+
 ];

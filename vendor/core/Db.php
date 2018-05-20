@@ -5,8 +5,9 @@ namespace vendor\core;
 
 class Db
 {
+    use TSingleton;
+
     private  $pdo;
-    private static $instance;
 
     private static $countQueries;
     private static $queries = [];
@@ -19,7 +20,6 @@ class Db
         \R::freeze(true);
         //\R::fancyDebug(true);
 
-
 //        // настройки PDO
 //        $connect_options = [
 //            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,      // выдавать в поток вывода ошибки SQL
@@ -28,13 +28,6 @@ class Db
 //        // подключаемся к БД
 //        $this->pdo = new \PDO(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS, $connect_options);
 
-    }
-
-    public static function instance() {
-        if (null === self::$instance) {
-            self::$instance = new self;
-        }
-        return self::$instance;
     }
 
     public function execute($sql, $params = [])  {

@@ -18,5 +18,10 @@ $app_config_data = [
         'dns' => 'mysql:host=localhost;dbname=fw;charset=utf8',
         'user' => 'marg',
         'pass' => 'letmedoit'
+    ],
+    'debug' => [
+        'debugging' => 'ttt',
+        'logging' => 0
     ]
+
 ];
