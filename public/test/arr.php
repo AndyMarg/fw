@@ -34,5 +34,31 @@ $array_test = [
     ]
 ];
 
+function removeDuplicates($parent, $child) {
+    debug($parent,'parent before');
+    debug($child,'child before');
+
+    if (is_array($child)) {
+        if (!empty($child)) {
+            if (is_int(array_keys($child)[0])) {
+                return $child[0];
+            } else {
+                $parent = removeDuplicates($child, $child[array_keys($child)[0]]);
+            }
+        }
+    }
+    debug($parent,'parent after');
+    debug($child,'child after');
+    return $child;
+}
+
 require_once '../../vendor/libs/utils.php';
-debug($array_test);
+//debug($array_test['level_1_5'],'parent');
+//debug($array_test['level_1_5']['level_2_5'],'child');
+//debug(removeDuplicates($array_test['level_1_5'], $array_test['level_1_5']['level_2_5']), 'result');
+
+removeDuplicates($array_test['level_1_5'], $array_test['level_1_5']['level_2_5']);
+
+
+
+//debug(removeDuplicates($array_test['level_1_5']['level_2_6']['level_3_6']));
