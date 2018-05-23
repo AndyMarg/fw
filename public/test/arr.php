@@ -35,49 +35,29 @@ $array_test = [
 ];
 require_once '../../vendor/libs/utils.php';
 
-function removeDuplicates($arr) {
-    if (is_array($arr)) {
-
-        foreach ($arr as $child) {
-            if (is_array($child)) {
-                if (!empty($child)) {
-                    if (is_int(array_keys($child)[0])) {
-                        $child = $child[0];
-                        return $child[0];
-                    } else {
-                        $child = removeDuplicates($child);
-                        return $child;
-                    }
-                }
-            }
-            return $arr;
-        }
-        return $child;
-    } else {
-        return $arr;
-    }
-}
+$keys = [];
+$level = 0;
 
 function visitArray($arr) {
-    foreach ($arr as$item) {
-        if (is_array($item)) {
-            visitArray($item);
+    global $keys;
+    global $level;
+    $level++;
+    foreach ($arr as $key => $value) {
+        if (!is_array($value))
+            continue;
+        $keys[] = [$level,$key];
+        if (array_keys($value)[0] === 0) {
+            $keys[] = [$level, '>>>>>>>>>>'];
         } else {
-            echo $item . "<br>";
+            visitArray($value);
+            $level--;
         }
     }
 }
 
 debug($array_test);
-
-foreach ($array_test as $key => $item) {
-    $array_test[$key] = removeDuplicates($array_test[$key]);
-}
-
-debug($array_test, 'after');
-//debug(removeDuplicates($array_test));
-//$array_test['level_1_5']['level_2_5']['level_3_3'] = removeDuplicates($array_test['level_1_5']['level_2_5']['level_3_3']);
-
+visitArray($array_test);
+debug($keys);
 
 
 
