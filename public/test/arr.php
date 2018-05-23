@@ -33,32 +33,53 @@ $array_test = [
         ]
     ]
 ];
+require_once '../../vendor/libs/utils.php';
 
-function removeDuplicates($parent, $child) {
-    debug($parent,'parent before');
-    debug($child,'child before');
+function removeDuplicates($arr) {
+    if (is_array($arr)) {
 
-    if (is_array($child)) {
-        if (!empty($child)) {
-            if (is_int(array_keys($child)[0])) {
-                return $child[0];
-            } else {
-                $parent = removeDuplicates($child, $child[array_keys($child)[0]]);
+        foreach ($arr as $child) {
+            if (is_array($child)) {
+                if (!empty($child)) {
+                    if (is_int(array_keys($child)[0])) {
+                        $child = $child[0];
+                        return $child[0];
+                    } else {
+                        $child = removeDuplicates($child);
+                        return $child;
+                    }
+                }
             }
+            return $arr;
         }
+        return $child;
+    } else {
+        return $arr;
     }
-    debug($parent,'parent after');
-    debug($child,'child after');
-    return $child;
 }
 
-require_once '../../vendor/libs/utils.php';
-//debug($array_test['level_1_5'],'parent');
-//debug($array_test['level_1_5']['level_2_5'],'child');
-//debug(removeDuplicates($array_test['level_1_5'], $array_test['level_1_5']['level_2_5']), 'result');
+function visitArray($arr) {
+    foreach ($arr as$item) {
+        if (is_array($item)) {
+            visitArray($item);
+        } else {
+            echo $item . "<br>";
+        }
+    }
+}
 
-removeDuplicates($array_test['level_1_5'], $array_test['level_1_5']['level_2_5']);
+debug($array_test);
+
+foreach ($array_test as $key => $item) {
+    $array_test[$key] = removeDuplicates($array_test[$key]);
+}
+
+debug($array_test, 'after');
+//debug(removeDuplicates($array_test));
+//$array_test['level_1_5']['level_2_5']['level_3_3'] = removeDuplicates($array_test['level_1_5']['level_2_5']['level_3_3']);
 
 
 
-//debug(removeDuplicates($array_test['level_1_5']['level_2_6']['level_3_6']));
+
+
+
