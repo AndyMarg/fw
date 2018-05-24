@@ -18,6 +18,7 @@ class Config
     private $objectRegistry;            // реестр заранее созданных объектов
     private $_root = 'UNDEFINED';       // путь к корню приложения
     private $cache;                     // менеджер кэша
+    private $errorHandler;              // обработчик ошибок
 
     private function __construct() {}
 
@@ -90,6 +91,9 @@ class Config
 
        // формируем реестр конфигурации
         $this->registry = $this->addArrayToRegistry($this->registry, $all_config_data);
+
+        // создаем обработчика ошибок
+        $this->errorHandler = new ErrorHandler();
 
         // создаем реестр загружаемых объектов и заполняем его на основе конфигурации
         $this->objectRegistry = ObjectRegistry::instance();

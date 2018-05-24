@@ -7,8 +7,6 @@ require_once '../vendor/core/Config.php';   // Менеджер конфигур
 use vendor\core\Router;
 use vendor\core\Config;
 
-//error_reporting(E_ALL);
-
 // инициализация и конфигурация фреймворка
 $config = Config::instance();
 $config->init($app_config_data);

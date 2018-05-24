@@ -16,7 +16,8 @@ $_config_data = [
     ],
     'debug' => [
         'debugging' => 1,
-        'logging' => 0
+        'logging' => 0,
+        'logfile' => ''
     ]
 
 ];

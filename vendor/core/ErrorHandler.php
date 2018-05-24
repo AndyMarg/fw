@@ -2,24 +2,39 @@
 
 namespace vendor\core;
 
-
+/**
+ * Class ErrorHandler Обработчик ошибок
+ * @package vendor\core
+ *
+ */
 class ErrorHandler
 {
     const E_EXCEPTION = 100000;  // уровень ошибок для исключений. Используется в getErrorLevelDescript()
 
     public function __construct()
     {
-        if (DEBUG) {
+        // обрабатывать ли ошибки
+        if (Config::instance()->debug->debugging) {
             error_reporting(-1);
         } else {
             error_reporting(0);
         }
+        // обработчик обычных ошибок
         set_error_handler([$this, 'errorHandler']);
+        // для отмкны вывода системы - буферизируем вывод
         ob_start();
+        // обработчик фатальных ошибок
         register_shutdown_function([$this, 'fatalErrorHandler']);
+        // обработчик исключений (пользовательских и системных). Перехватывает использование errorHandler
         set_exception_handler([$this, 'exceptionHandler']);
     }
 
+    /**
+     * Для вывода контанты уровня ошибки
+     *
+     * @param $errno
+     * @return mixed Уровень ошибки
+     */
     private function getErrorLevelDescript ($errno)
     {
         $errors = array(
@@ -38,39 +53,68 @@ class ErrorHandler
             E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
             E_DEPRECATED => 'E_DEPRECATED',
             E_USER_DEPRECATED => 'E_USER_DEPRECATED',
-            E_EXCEPTION => 'E_EXCEPTION'  // определена как константа класса
+            self::E_EXCEPTION => 'E_EXCEPTION'  // определена как константа класса
         );
         return $errors[$errno];
     }
 
+    /**
+     * Вывод ошибки в лог. Файл лога определяется в пользовательской конфигурации (debug->logfile).
+     * Если файл лога не определен, вывод в лог не происходит.
+     *
+     * @param $errno    Уровень ошибки
+     * @param $errstr   Сообщени
+     * @param $errfile  Файл, в котором произошла ошибка
+     * @param $errline  Строка, в которой произошла ошибка
+     */
     private function log($errno, $errstr, $errfile, $errline) {
+        $logfile = Config::instance()->debug->logfile;
+        if(empty($logfile)) return;
         $errLevel = $this->getErrorLevelDescript($errno);
         error_log("[" . date('Y-m-d H-i-s') . "] Уровень: {$errLevel} |  Ошибка: {$errstr} | " .
-            "Файл: {$errfile} | Строка: {$errline}\n", 3, __DIR__ . '/errors.log');
+            "Файл: {$errfile} | Строка: {$errline}\n", 3, $logfile);
     }
 
+    /**
+     * Обработчик ошибок
+     *
+     * @param $errno    Уровень ошибки
+     * @param $errstr   Сообщени
+     * @param $errfile  Файл, в котором произошла ошибка
+     * @param $errline  Строка, в которой произошла ошибка
+     * @return bool     Если true - ошибка обработана
+     */
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        if (FILE_LOGGING)
+        if (Config::instance()->debug->logging)
             $this->log($errno, $errstr, $errfile, $errline);
         $this->displayError($errno, $errstr, $errfile, $errline);
         return true;
     }
 
+    /**
+     * Обработчик исключений
+     *
+     * @param $e Класс исключения
+     */
     public function exceptionHandler($e)
     {
         $responseCode = empty($e->getCode()) ? 500 : $e->getCode();
-        if (FILE_LOGGING)
-            $this->log(E_EXCEPTION, $e->getMessage(), $e->getFile(), $e->getLine());
-        $this->displayError(E_EXCEPTION, $e->getMessage(), $e->getFile(), $e->getLine(), $responseCode);
+        if (Config::instance()->debug->logging)
+            $this->log(self::E_EXCEPTION, $e->getMessage(), $e->getFile(), $e->getLine());
+        $this->displayError(self::E_EXCEPTION, $e->getMessage(), $e->getFile(), $e->getLine(), $responseCode);
     }
 
+    /**
+     * Обработчик фатальных ошибок
+     */
     public function fatalErrorHandler()
     {
         $error = error_get_last();
         if (!empty($error) && $error['type'] & ( E_ERROR | E_PARSE | E_COMPILE_ERROR | E_CORE_ERROR)) {
+            // отменяем буферизацию вывода, включенную в кострукторе для отмены вывода сообщения системой
             ob_end_clean();
-            if (FILE_LOGGING)
+            if (Config::instance()->debug->logging)
                 $this->log($error['type'], $error['message'], $error['file'], $error['line']);
             $this->displayError($error['type'], $error['message'], $error['file'], $error['line']);
         } else {
@@ -78,15 +122,25 @@ class ErrorHandler
         }
     }
 
+    /**
+     * Вывод ошибки в поток вывода (http response по умолчанию)
+     *
+     * @param $errno    Уровень ошибки
+     * @param $errstr   Сообщени
+     * @param $errfile  Файл, в котором произошла ошибка
+     * @param $errline  Строка, в которой произошла ошибка
+     * @param int $responseCode Код ответа сервера (по умолчанию 500)
+     */
     private function displayError($errno, $errstr, $errfile, $errline, $responseCode = 500)
     {
         http_response_code($responseCode);
         $errLevel = $this->getErrorLevelDescript($errno);
-        if (DEBUG) {
+        if (Config::instance()->debug->debugging) {
             require_once 'views/dev.php';
         } else {
             require_once 'views/prod.php';
         }
+        die;
     }
 
 }
