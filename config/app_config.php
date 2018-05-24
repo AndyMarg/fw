@@ -20,8 +20,8 @@ $app_config_data = [
         'pass' => 'letmedoit'
     ],
     'debug' => [
-        'debugging' => 'ttt',
-        'logging' => 0
+        'debugging' => 0,
+//        'logging' => 1
     ]
 
 ];

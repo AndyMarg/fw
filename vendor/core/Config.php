@@ -42,26 +42,28 @@ class Config
         return $parent;
     }
 
-    private function removeDuplicateValues($data)
-    {
-//       foreach ($data as $key => $value) {
-//            if (is_array($value)) {
-//                if (!is_string(array_keys($value)[0])) {
-//                    $data[$key] = $value[0];
-//                    return $data[$key];
-//                }
-//                $val = $this-> removeDuplicateValues($data[$key]);
-//                if (!is_array($val)) {
-//
-//                    $data[$key] = $val    ;
-//                }
-//            } else {
-//                if (!is_string($key)) {
-//                    return $data[$key];
-//                }
-//            }
-//        }
-        return $data;
+    /**
+     * Удаляет из массивов конфигурации дублирующиеся значения,
+     * если пользовательская конфигурация перезаписывает конфигурацию фреймворка.
+     * Приоритет отдается пользовательской конфигурации
+     *
+     * @param $arr Объединенный массив конфигурации (передается по ссылке!!!!)
+     */
+    private function removeDuplicates(&$arr) {
+        if (is_array($arr)) {
+            foreach ($arr as $key => $value) {
+                if (is_array($value)) {
+                    if (!empty($value)) {
+                        if (0 === array_keys($value)[0]) {
+                            $arr[$key] = $value[0];
+                        } else {
+                            $this->removeDuplicates($value);
+                            $arr[$key] = $value;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -84,8 +86,7 @@ class Config
         require_once 'config_data.php';
         // объединяем пользовательскую и системную конфингурацию
         $all_config_data = array_merge_recursive($app_config_data, $_config_data);
-        $all_config_data = $this->removeDuplicateValues($all_config_data);
-        debug($all_config_data);
+        $this->removeDuplicates($all_config_data);
 
        // формируем реестр конфигурации
         $this->registry = $this->addArrayToRegistry($this->registry, $all_config_data);
