@@ -39,7 +39,6 @@ class MainController extends AppController
     public function testAction()
     {
         if($this->isAjax()) {
-            //$model = new Main();
             $post = \R::findOne('posts', "id = {$_POST['id']}");
             echo View::getViewContent($this, 'a_test', compact('post'));
             die;

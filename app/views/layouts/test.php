@@ -8,10 +8,7 @@
     <link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/public/css/style.css">
 
-    <title><?=$meta['title']?></title>
-    <meta name="description" content="<?=$meta['description']?>">
-    <meta name="keywords" content="<?=$meta['keywords']?>">
-</head>
+    <?php \vendor\core\base\View::printMeta(); ?></head>
 <body>
 
 <div class="container">

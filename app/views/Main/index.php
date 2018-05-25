@@ -1,6 +1,8 @@
 <!--View Main->index begin -->
 <div class="container">
+
     <button class="btn btn-default" id="send">Кнопка</button>
+    <div id="answer"></div>
     <?php if(!empty($posts)): ?>
         <?php foreach ($posts as $post): ?>
                 <div class="panel panel-default">
@@ -20,7 +22,8 @@
                 type: 'post',
                 data: {'id': 2},
                 success: function (res) {
-                    console.log(res);
+                    //console.log(res);
+                    $('#answer').html(res);
                 },
                 error: function () {
                     alert('ERROR!!!!');

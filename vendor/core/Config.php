@@ -19,6 +19,7 @@ class Config
     private $_root = 'UNDEFINED';       // путь к корню приложения
     private $cache;                     // менеджер кэша
     private $errorHandler;              // обработчик ошибок
+    private $config_source;             // объединенный исходный массив конфигурации (пользовательский и системной)
 
     private function __construct() {}
 
@@ -88,6 +89,8 @@ class Config
         // объединяем пользовательскую и системную конфингурацию
         $all_config_data = array_merge_recursive($app_config_data, $_config_data);
         $this->removeDuplicates($all_config_data);
+        // сохраняем в приватной переменной для дальнейшей отладки
+        $this->config_source = $all_config_data;
 
        // формируем реестр конфигурации
         $this->registry = $this->addArrayToRegistry($this->registry, $all_config_data);
@@ -164,4 +167,11 @@ class Config
         return $this->cache;
     }
 
+    /**
+     * @return array объединенный исходный массив конфигурации (пользовательский и системной)
+     */
+    public function getConfigSource()
+    {
+        return $this->config_source;
+    }
 }

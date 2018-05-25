@@ -88,7 +88,8 @@ class ErrorHandler
     {
         if (Config::instance()->debug->logging)
             $this->log($errno, $errstr, $errfile, $errline);
-        $this->displayError($errno, $errstr, $errfile, $errline);
+        if (Config::instance()->debug->debugging || in_array($errno, [E_USER_ERROR, E_RECOVERABLE_ERROR]))
+            $this->displayError($errno, $errstr, $errfile, $errline);
         return true;
     }
 
