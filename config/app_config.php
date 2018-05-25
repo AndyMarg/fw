@@ -11,7 +11,9 @@ $app_config_data = [
     'path' => [
         'temp' => ROOT . '/tmp',
         'cache' => ROOT . '/tmp/cache',
-        'views' => ROOT . '/app/views'
+        'views' => ROOT . '/app/views',
+        'error_views' => ROOT . '/errors/views',
+        'error_log' => ROOT . '/errors/log'
     ],
     'db' => [
         'dns' => 'mysql:host=localhost;dbname=fw;charset=utf8',
@@ -19,9 +21,12 @@ $app_config_data = [
         'pass' => 'letmedoit'
     ],
     'debug' => [
-//        'debugging' => 0,
-        'logging' => 1,
-        'logfile' => ROOT. '/log/error.log'
+        'debugging' => 1,
+        'logging' => 0,
+        'logfile' => 'error.log',
+        'dev_error_view' => 'dev.php',
+        'prod_error_view' => 'prod.php',
+        'view_404' => '404.php'
     ]
 
 ];

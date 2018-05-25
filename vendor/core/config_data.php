@@ -5,19 +5,28 @@
  */
 $_config_data = [
 
-        'objects' => [
-            'cache' => 'vendor\core\Cache'
-        ],
+    'path' => [
+        'error_views' => 'views',
+        'error_log' => ''
+    ],
+
+    'objects' => [
+        'cache' => 'vendor\core\Cache'
+    ],
 
     'defaults' => [
         'controller' => 'Main',
         'action' => 'index',
         'layout' => 'default'
     ],
+
     'debug' => [
         'debugging' => 1,
         'logging' => 0,
-        'logfile' => ''
+        'logfile' => '',
+        'dev_error_view' => 'dev.php',
+        'prod_error_view' => 'prod.php',
+        'view_404' => '404.php'
     ]
 
 ];

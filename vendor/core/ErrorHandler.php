@@ -68,7 +68,7 @@ class ErrorHandler
      * @param $errline  Строка, в которой произошла ошибка
      */
     private function log($errno, $errstr, $errfile, $errline) {
-        $logfile = Config::instance()->debug->logfile;
+        $logfile = Config::instance()->path->error_log . '/' . Config::instance()->debug->logfile;
         if(empty($logfile)) return;
         $errLevel = $this->getErrorLevelDescript($errno);
         error_log("[" . date('Y-m-d H-i-s') . "] Уровень: {$errLevel} |  Ошибка: {$errstr} | " .
@@ -133,12 +133,19 @@ class ErrorHandler
      */
     private function displayError($errno, $errstr, $errfile, $errline, $responseCode = 500)
     {
+        $error_path = Config::instance()->path->error_views;
         http_response_code($responseCode);
+        // 404
+        if ($responseCode === 404) {
+            include $error_path . '/' . Config::instance()->debug->view_404;
+            die;
+        }
+        // прочие ошибки
         $errLevel = $this->getErrorLevelDescript($errno);
         if (Config::instance()->debug->debugging) {
-            require_once 'views/dev.php';
+            require_once $error_path . '/' . Config::instance()->debug->dev_error_view;
         } else {
-            require_once 'views/prod.php';
+            require_once $error_path . '/' . Config::instance()->debug->prod_error_view;
         }
         die;
     }

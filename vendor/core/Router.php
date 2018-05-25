@@ -90,6 +90,7 @@ class Router
      * Диспетчеризация по маршруту (вызов метода контроллера)
      *
      * @param string $uri URI для поиска маршрута
+     * @throws \Exception
      */
     public static function dispatch($uri) {
         $uri = self::removeQueryString($uri);
@@ -102,14 +103,14 @@ class Router
                     $controller->$action();
                     $controller->showView();
                 } else {
-                    echo "Метод <b>$controllerClass::$action</b> НЕ найден<br>";
+                    throw  new \Exception("Метод <b>$controllerClass::$action</b> НЕ найден");
                 }
             } else {
-                echo "Контроллер <b>$controllerClass</b> НЕ найден<br>";
+                throw  new \Exception("Контроллер <b>$controllerClass</b> НЕ найден");
+
             }
         } else {
-            http_response_code(404);
-            include '404.html';
+            throw new \Exception('Страница не найдена ...', 404);
         }
     }
 

@@ -11,6 +11,8 @@ use vendor\core\Config;
 $config = Config::instance();
 $config->init($app_config_data);
 
+//echo $test;
+
 // ******************** пользовательские маршруты ************************
 // пользоватедьские маршруты должны определяться ДО маршрутов по умолчанию
 Router::add('^/page/(?P<action>[a-z-]+)/(?P<alias>[a-z-]+)$', ['controller' => 'Page']);
