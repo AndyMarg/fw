@@ -27,6 +27,15 @@ $_config_data = [
         'dev_error_view' => 'dev.php',
         'prod_error_view' => 'prod.php',
         'view_404' => '404.php'
+    ],
+
+    'widgets' => [
+        'menu' => [
+            'template' => 'tpl/default.tpl.php',
+            'table' => '',
+            'html_container' => 'ul',
+            'cache' => 0
+        ]
     ]
 
 ];

@@ -27,6 +27,12 @@ $app_config_data = [
         'dev_error_view' => 'dev.php',
         'prod_error_view' => 'prod.php',
         'view_404' => '404.php'
+    ],
+    'widgets' => [
+        'menu' => [
+            'table' => 'categories',
+            'template' => ROOT . '/app//widgets/menu/tpl/user_menu.tpl.php'
+        ]
     ]
 
 ];

@@ -25,5 +25,4 @@ Router::add('^/(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$');
 $uri = rtrim($_SERVER['REQUEST_URI'],'/');
 Router::dispatch($uri);
 
-new \vendor\widgets\menu\Menu();
 
