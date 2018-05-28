@@ -34,6 +34,7 @@ $_config_data = [
             'template' => 'tpl/default.tpl.php',
             'table' => '',
             'html_container' => 'ul',
+            'container_class' => 'menu',
             'cache' => 0
         ]
     ]

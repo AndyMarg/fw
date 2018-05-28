@@ -31,7 +31,7 @@ $app_config_data = [
     'widgets' => [
         'menu' => [
             'table' => 'categories',
-            'template' => ROOT . '/app//widgets/menu/tpl/user_menu.tpl.php'
+            'template' => ROOT . '/app//widgets/menu/tpl/list_menu.tpl.php',
         ]
     ]
 

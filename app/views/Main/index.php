@@ -2,7 +2,23 @@
 <div class="container">
 
     <button class="btn btn-default" id="send">Кнопка</button>
-    <?php new \vendor\widgets\menu\Menu();  ?>
+    <br><br>
+
+    <?php
+        $menu = new \vendor\widgets\menu\Menu();
+        $menu->configure([
+           'template' =>  $_SERVER['DOCUMENT_ROOT'] . '/app/widgets/menu/tpl/select_menu.tpl.php',
+           'html_container' => 'select',
+           'container_class' => 'select_menu'
+        ]);
+        $menu->run();
+    ?>
+    <br><br>
+
+    <?php
+        $menu = new \vendor\widgets\menu\Menu();
+        $menu->run();
+    ?>
 
     <div id="answer"></div>
     <?php if(!empty($posts)): ?>

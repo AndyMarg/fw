@@ -28,16 +28,26 @@ class Menu
      */
     private $html_container;
     /**
+     * @var Класс Родительского тега для меню
+     */
+    private $container_class;
+    /**
      * @var Таблица БД с данными для построения меню
      */
-    private $table = 'categories';
+    private $table;
     /**
      * @var Объект для кэширования
      */
     private $cache;
 
     public function __construct() {
-        $this->run();
+        $this->configure([
+            'table' => Config::instance()->widgets->menu->table,
+            'html_container' => Config::instance()->widgets->menu->html_container,
+            'template' => Config::instance()->widgets->menu->template,
+            'container_class' => Config::instance()->widgets->menu->container_class,
+            'cache' => 3600
+        ]);
     }
 
     public function configure($options)
@@ -51,16 +61,19 @@ class Menu
 
     public function run()
     {
-        $this->configure([
-            'table' => Config::instance()->widgets->menu->table,
-            'html_container' => Config::instance()->widgets->menu->html_container,
-            'template' => Config::instance()->widgets->menu->template,
-            'cache' => 3600
-        ]);
+        if (!isset($this->table) || $this->table === '')
+            throw new \Exception('Не определена таблица для формирования меню');
         $this->dbDataArray = \R::getAssoc("select * from $this->table");
         $this->treeArray = $this->getTree($this->dbDataArray);
         $this->htmlCode = $this->getHtmlCode($this->treeArray);
-        echo $this->htmlCode;
+        $this->show($this->htmlCode);
+    }
+
+    private function show(string $html)
+    {
+        echo "<{$this->html_container} class='{$this->container_class}'>";
+        echo $html;
+        echo "</{$this->html_container}>";
     }
 
     private function getTree($source)
