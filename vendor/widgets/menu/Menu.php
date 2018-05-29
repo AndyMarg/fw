@@ -5,6 +5,10 @@ namespace vendor\widgets\menu;
 
 use vendor\core\Config;
 
+/**
+ * Class Menu Виджет меню (настраиваемый)
+ * @package vendor\widgets\menu
+ */
 class Menu
 {
     /**
@@ -36,20 +40,32 @@ class Menu
      */
     private $table;
     /**
-     * @var Объект для кэширования
+     * @var Время кэширования
      */
-    private $cache;
+    private $cache_time;
+    /**
+     * @var Ключ кэширования
+     */
+    private $cache_key;
 
     public function __construct() {
+        // Задаем параметры конфигурации меню в виде массива
         $this->configure([
             'table' => Config::instance()->widgets->menu->table,
             'html_container' => Config::instance()->widgets->menu->html_container,
             'template' => Config::instance()->widgets->menu->template,
             'container_class' => Config::instance()->widgets->menu->container_class,
-            'cache' => 3600
+            'cache_time' =>  Config::instance()->widgets->menu->cache_time,
+            'cache_key' =>  Config::instance()->widgets->menu->cache_key
         ]);
     }
 
+    /**
+     * Конфигурируем меню
+     * Устанавливаем свойства объекта Menu (имена свойств должны совпадать с ключами массива конфигурации
+     *
+     * @param $options Массив с параметрами конфигурации меню
+     */
     public function configure($options)
     {
         foreach ($options as $key => $value) {
@@ -59,23 +75,52 @@ class Menu
         }
     }
 
+    /**
+     * Формируем и выводим меню
+     *
+     * @throws \Exception В случае, если имя таблицы бд, из которой формируется меню не определено
+     */
     public function run()
     {
         if (!isset($this->table) || $this->table === '')
             throw new \Exception('Не определена таблица для формирования меню');
-        $this->dbDataArray = \R::getAssoc("select * from $this->table");
-        $this->treeArray = $this->getTree($this->dbDataArray);
-        $this->htmlCode = $this->getHtmlCode($this->treeArray);
+        // Получаем меню из кэша
+        $this->htmlCode = Config::instance()->getCache()->get($this->cache_key);
+        // если из кэша достать не получилось (отсутствует или устарел), берем из бд
+        if (!$this->htmlCode) {
+            // исходный плоский массив из базы (в каждой строке ссылка на родителя. если есть)
+            $this->dbDataArray = \R::getAssoc("select * from $this->table");
+            // строим промежуточный массив дерева на основе исходного
+            $this->treeArray = $this->getTree($this->dbDataArray);
+            // получаем HTML код
+            $this->htmlCode = $this->getHtmlCode($this->treeArray);
+            // если определен ключч кэширования. то кэшируем
+            if (!empty($this->cache_key)) {
+                Config::instance()->getCache()->set($this->cache_key, $this->htmlCode, $this->cache_time);
+            }
+        }
+        // выводим меню
         $this->show($this->htmlCode);
     }
 
-    private function show(string $html)
+    /**
+     * Выводим меню
+     *
+     * @param $html HTML код меню
+     */
+    private function show( $html)
     {
         echo "<{$this->html_container} class='{$this->container_class}'>";
         echo $html;
         echo "</{$this->html_container}>";
     }
 
+    /**
+     * Строим иерархический массив в виде дерева
+     *
+     * @param $source Исходные данные из бд (плоский массив) (в каждой строке ссылка на родителя. если есть)
+     * @return array Массив в виде дерева
+     */
     private function getTree($source)
     {
         $tree = [];
@@ -89,18 +134,35 @@ class Menu
         return $tree;
     }
 
+    /**
+     * Строим HTML код меню (вызывается рекурсивно из HTML шаблона)
+     *
+     * @param $treeNode  Узел дерева
+     * @param string $tab  Строка для сдвига узла дерева на очередном уровне
+     * @return string HTML код меню
+     */
     private function getHtmlCode ($treeNode, $tab = '')
     {
         $html ='';
         foreach ( $treeNode as $id => $node) {
-            $html .= $this->catToTemplate($node, $tab, $id);
+            // добавляем HTML код для очередного пункта меню
+            $html .= $this->getHtmlForCurrentNode($node, $tab, $id);
         }
         return $html;
     }
 
-    private function catToTemplate($node, $tab, $id)
+    /**
+     * Строим HTML код для очередного пункта меню
+     *
+     * @param $node Очередной пункт меню
+     * @param $tab Строка для сдвига узла дерева на очередном уровне
+     * @param $id ИД пункта меню (ИД из таблицы бд)
+     * @return string HTML код пункта меню
+     */
+    private function getHtmlForCurrentNode($node, $tab, $id)
     {
         ob_start();
+        // выводим HTML код из шаблона в буфер вывода
         require $this->template;
         return ob_get_clean();
     }

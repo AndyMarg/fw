@@ -9,7 +9,9 @@
         $menu->configure([
            'template' =>  $_SERVER['DOCUMENT_ROOT'] . '/app/widgets/menu/tpl/select_menu.tpl.php',
            'html_container' => 'select',
-           'container_class' => 'select_menu'
+           'container_class' => 'select_menu',
+            'cache_key' => 'select_menu',
+            'cache_time' => 2400
         ]);
         $menu->run();
     ?>

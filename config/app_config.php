@@ -32,6 +32,8 @@ $app_config_data = [
         'menu' => [
             'table' => 'categories',
             'template' => ROOT . '/app//widgets/menu/tpl/list_menu.tpl.php',
+            'cache_key' => 'list_menu',
+            'cache_time' => 1800
         ]
     ]
 

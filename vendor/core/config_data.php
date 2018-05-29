@@ -35,7 +35,8 @@ $_config_data = [
             'table' => '',
             'html_container' => 'ul',
             'container_class' => 'menu',
-            'cache' => 0
+            'cache_time' => 3600,
+            'cache_key' => ''
         ]
     ]
 
