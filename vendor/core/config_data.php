@@ -17,7 +17,10 @@ $_config_data = [
     'defaults' => [
         'controller' => 'Main',
         'action' => 'index',
-        'layout' => 'default'
+        'layout' => 'default',
+        'admin_controller' => 'User',
+        'admin_action' => 'index',
+        'admin_prefix' => 'admin'
     ],
 
     'debug' => [
