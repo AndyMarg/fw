@@ -16,6 +16,10 @@ class Router
      * @var array Отдельный маршрут
      */
     private static $route = [];
+    /**
+     * @var bool Если true - маршрутизация админки
+     */
+    private static $is_admin;
 
     /**
      * @return array Вернуть таблицу маршрутов
@@ -66,6 +70,9 @@ class Router
     {
         foreach (self::$routes as $pattern => $route) {
             if (preg_match("#$pattern#i", $uri, $matches)) {
+                // отпределяем, является ли маршрут - маршрутом админки
+                self::$is_admin = (strpos($pattern, '/' . Config::instance()->defaults->admin_url_prefix . '/')) ? true : false;
+                // заполняем маршрут из URI
                 foreach ($matches as $key => $val) {
                     if (is_string($key)) {
                         $route[$key] = $val;
@@ -95,7 +102,10 @@ class Router
     public static function dispatch($uri) {
         $uri = self::removeQueryString($uri);
         if (self::matchRoute($uri)) {
-            $controllerClass = 'app\\controllers\\' . self::$route['controller'] . 'Controller';
+            $config = Config::instance();
+            $path = (self::$is_admin) ? $config->path->admin_controllers : $config->path->controllers;
+            $path = str_replace('/', '\\',  str_replace($config->root, '', $path)) . '\\';
+            $controllerClass = $path .  self::$route['controller'] . 'Controller';
             if (class_exists($controllerClass)) {
                 $controller = new $controllerClass(self::$route);
                 $action = self::$route['action'] . 'Action';

@@ -12,6 +12,8 @@ $app_config_data = [
         'temp' => ROOT . '/tmp',
         'cache' => ROOT . '/tmp/cache',
         'views' => ROOT . '/app/views',
+        'controllers' => ROOT . '/app/controllers',
+        'admin_controllers' => ROOT . '/app/controllers/admin',
         'error_views' => ROOT . '/errors/views',
         'error_log' => ROOT . '/errors/log'
     ],
@@ -35,6 +37,6 @@ $app_config_data = [
             'cache_key' => 'list_menu',
             'cache_time' => 1800
         ]
-    ]
+    ],
 
 ];

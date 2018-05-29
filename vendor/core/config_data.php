@@ -20,7 +20,7 @@ $_config_data = [
         'layout' => 'default',
         'admin_controller' => 'User',
         'admin_action' => 'index',
-        'admin_prefix' => 'admin'
+        'admin_url_prefix' => 'admin'
     ],
 
     'debug' => [

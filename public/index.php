@@ -19,8 +19,8 @@ Router::add('^/page/(?P<alias>[a-z-]+)$', ['controller' => 'Page', 'action' => '
 //**************** дефолтные маршруты ****************************
 
 // маршруты по умолчанию для админки
-Router::add('^/admin/?$', ['controller' => $config->defaults->admin_controller, 'action' => $config->defaults->admin_action, 'prefix' => $config->defaults->admin_prefix]);
-Router::add('^/admin/(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$', ['prefix' => $config->defaults->admin_prefix]);
+Router::add('^/' . $config->defaults->admin_url_prefix . '/?$', ['controller' => $config->defaults->admin_controller, 'action' => $config->defaults->admin_action]);
+Router::add('^/' . $config->defaults->admin_url_prefix . '/(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$');
 
 // маршрут по умолчанию для пустого URI
 Router::add('^$', ['controller' => $config->defaults->controller, 'action' => $config->defaults->action]);
