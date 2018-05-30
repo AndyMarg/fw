@@ -1,12 +1,12 @@
 <?php
 
-namespace vendor\fw\core;
+namespace fw\core;
 
 /**
  * Доступ к ассоциатовному массиву как к объекту. Ключи представлены как свойства объекта.
  *
  * Class ArrayAsObject
- * @package vendor\fw\core
+ * @package fw\core
  */
 class ArrayAsObject
 {

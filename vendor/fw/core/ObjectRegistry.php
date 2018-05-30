@@ -1,13 +1,13 @@
 <?php
 
-namespace vendor\fw\core;
+namespace fw\core;
 
 /**
  * Объекты, автоматически создаваемые при загрузке или созданные по требованию.
  * Шаблон Registry. Обращение по алиасу.
  *
  * Class ObjectRegistry
- * @package vendor\fw\core
+ * @package fw\core
  */
 class ObjectRegistry
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace vendor\fw\core;
+namespace fw\core;
 
 /**
  * Class Router

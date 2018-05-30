@@ -2,7 +2,7 @@
 
 namespace app\controllers\admin;
 
-use vendor\fw\core\base\View;
+use fw\core\base\View;
 
 class UserController extends AppController
 {

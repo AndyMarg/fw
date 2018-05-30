@@ -1,11 +1,12 @@
 <?php
 
 require_once '../vendor/fw/libs/utils.php';    // утилиты для отладки
-require_once '../config/app_config.php';    // массив с пользовательской конфигурацией фрейймворка
-require_once '../vendor/fw/core/Config.php';   // Менеджер конфигурации
+require_once '../config/app_config.php';       // массив с пользовательской конфигурацией фрейймворка
 
-use vendor\fw\core\Router;
-use vendor\fw\core\Config;
+use fw\core\Router;
+use fw\core\Config;
+
+require __DIR__ . '/../vendor/autoload.php';
 
 // инициализация и конфигурация фреймворка
 $config = Config::instance();

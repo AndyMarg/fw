@@ -3,8 +3,9 @@
 namespace app\controllers\admin;
 
 
-use vendor\fw\core\base\Controller;
-use vendor\fw\core\Config;
+//use fw\core\base\Controller;
+use fw\core\base\Controller;
+use fw\core\Config;
 
 class AppController extends Controller
 {

@@ -1,6 +1,7 @@
 <?php
 
-namespace vendor\fw\core;
+namespace fw\core;
+
 
 require_once 'TSingleton.php';
 
@@ -75,14 +76,6 @@ class Config
      */
     public function init(array $app_config_data) {        // устанавливаем путь к корню приложения (для работы функции автозагрузки классов)
         $this->_root = ROOT;
-
-        // функция автозагрузки
-        spl_autoload_register(function ($class) {
-            $file = $this->getRoot() . '/' . str_replace('\\', '/', $class) . '.php';
-            if(is_file($file)) {
-                require_once $file;
-            }
-        });
 
         // массив системной конфигурации
         require_once 'config_data.php';

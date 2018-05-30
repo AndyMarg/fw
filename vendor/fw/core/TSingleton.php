@@ -1,10 +1,10 @@
 <?php
 
-namespace vendor\fw\core;
+namespace fw\core;
 
 /**
  * Trait TSingleton Для добавления к классам шаблона синглетон
- * @package vendor\fw\core
+ * @package fw\core
  */
 trait TSingleton
 {

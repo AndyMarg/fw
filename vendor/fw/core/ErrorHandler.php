@@ -1,10 +1,10 @@
 <?php
 
-namespace vendor\fw\core;
+namespace fw\core;
 
 /**
  * Class ErrorHandler Обработчик ошибок
- * @package vendor\fw\core
+ * @package fw\core
  *
  */
 class ErrorHandler

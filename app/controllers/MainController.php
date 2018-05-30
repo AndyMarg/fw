@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 // use app\models\Main;
-use vendor\fw\core\base\View;
-use vendor\fw\core\Config;
+use fw\core\base\View;
+use fw\core\Config;
 
 class MainController extends AppController
 {

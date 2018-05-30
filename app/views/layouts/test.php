@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/public/css/style.css">
 
-    <?php \vendor\fw\core\base\View::printMeta(); ?></head>
+    <?php \fw\core\base\View::printMeta(); ?></head>
 <body>
 
 <div class="container">
