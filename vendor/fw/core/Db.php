@@ -1,6 +1,6 @@
 <?php
 
-namespace vendor\core;
+namespace vendor\fw\core;
 
 
 class Db
@@ -15,7 +15,7 @@ class Db
     private function __construct()
     {
         $config = Config::instance();
-        require_once $config->root . '/vendor/libs/rb-mysql.php';
+        require_once $config->root . '/vendor/fw/libs/rb-mysql.php';
         \R::setup($config->db->dns, $config->db->user, $config->db->pass);
         \R::freeze(true);
         //\R::fancyDebug(true);

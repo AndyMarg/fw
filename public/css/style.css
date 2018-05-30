@@ -1,9 +1,10 @@
 body {
     background: #cccccc;
 }
-
 .user_menu {
     color: green;
-
+}
+.admin_layout {
+    background-color: #afd9ee;
 }
 

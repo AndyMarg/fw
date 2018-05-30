@@ -14,6 +14,7 @@ $app_config_data = [
         'views' => ROOT . '/app/views',
         'controllers' => ROOT . '/app/controllers',
         'admin_controllers' => ROOT . '/app/controllers/admin',
+        'admin_views' =>  ROOT . '/app/views/admin',
         'error_views' => ROOT . '/errors/views',
         'error_log' => ROOT . '/errors/log'
     ],

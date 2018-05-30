@@ -11,7 +11,7 @@ $_config_data = [
     ],
 
     'objects' => [
-        'cache' => 'vendor\core\Cache'
+        'cache' => 'vendor\fw\core\Cache'
     ],
 
     'defaults' => [

@@ -2,18 +2,17 @@
 
 namespace app\controllers\admin;
 
+use vendor\fw\core\base\View;
 
 class UserController extends AppController
 {
-
     public function indexAction()
     {
-        debug(__METHOD__);
+        View::setMeta('Администрирование');
     }
 
     public function testAction()
     {
-        debug(__METHOD__);
     }
 }
 

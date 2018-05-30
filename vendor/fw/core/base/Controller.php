@@ -1,9 +1,9 @@
 <?php
 
-namespace vendor\core\base;
+namespace vendor\fw\core\base;
 
 
-use vendor\core\Config;
+use vendor\fw\core\Config;
 
 abstract class Controller
 {
@@ -16,13 +16,18 @@ abstract class Controller
      * @var array Пользовательские данные (доступны из шаблона и вида)
      */
     private $vars = [];
+    /**
+     * @var True - если это контроллер админки
+     */
+    private $is_admin;
 
-    public function __construct ($route)
+    public function __construct ($route, $is_admin = false)
     {
         $this->route = $route;
         $this->name = $route['controller'];
         $this->view = $route['action'];
         $this->layout = Config::instance()->defaults->layout;
+        $this->is_admin = $is_admin;
     }
 
     public function getLayout()
@@ -34,7 +39,6 @@ abstract class Controller
     {
         $this->layout = $layout;
     }
-
 
     public function getRoute()
     {
@@ -65,6 +69,19 @@ abstract class Controller
     public function setVars($vars) {
         $this->vars = $vars;
     }
+
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
+
+    public function setAdmin($is_admin)
+    {
+        $this->is_admin = $is_admin;
+    }
+
+
+
 
     /**
      * @return bool True, если запрос поступил посредством XMLHttpRequest (AJAX)

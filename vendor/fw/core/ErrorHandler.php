@@ -1,10 +1,10 @@
 <?php
 
-namespace vendor\core;
+namespace vendor\fw\core;
 
 /**
  * Class ErrorHandler Обработчик ошибок
- * @package vendor\core
+ * @package vendor\fw\core
  *
  */
 class ErrorHandler
@@ -103,7 +103,7 @@ class ErrorHandler
         $responseCode = empty($e->getCode()) ? 500 : $e->getCode();
         if (Config::instance()->debug->logging)
             $this->log(self::E_EXCEPTION, $e->getMessage(), $e->getFile(), $e->getLine());
-        $this->displayError(self::E_EXCEPTION, $e->getMessage(), $e->getFile(), $e->getLine(), $responseCode);
+        $this->displayError(self::E_EXCEPTION, $e->getMessage(), $e->getFile(), $e->getLine(), $responseCode, $e->getTraceAsString());
     }
 
     /**
@@ -132,7 +132,7 @@ class ErrorHandler
      * @param $errline  Строка, в которой произошла ошибка
      * @param int $responseCode Код ответа сервера (по умолчанию 500)
      */
-    private function displayError($errno, $errstr, $errfile, $errline, $responseCode = 500)
+    private function displayError($errno, $errstr, $errfile, $errline, $responseCode = 500, $trace = '')
     {
         $error_path = Config::instance()->path->error_views;
         http_response_code($responseCode);

@@ -5,7 +5,7 @@
     <br><br>
 
     <?php
-        $menu = new \vendor\widgets\menu\Menu();
+        $menu = new \vendor\fw\widgets\menu\Menu();
         $menu->configure([
            'template' =>  $_SERVER['DOCUMENT_ROOT'] . '/app/widgets/menu/tpl/select_menu.tpl.php',
            'html_container' => 'select',
@@ -18,7 +18,7 @@
     <br><br>
 
     <?php
-        $menu = new \vendor\widgets\menu\Menu();
+        $menu = new \vendor\fw\widgets\menu\Menu();
         $menu->run();
     ?>
 

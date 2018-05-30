@@ -1,10 +1,10 @@
 <?php
 
-namespace vendor\core;
+namespace vendor\fw\core;
 
 /**
  * Class Cache  Менеджер кэша
- * @package vendor\core
+ * @package vendor\fw\core
  */
 class Cache
 {

@@ -12,28 +12,15 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container admin_layout">
 
-    <!-- MENU -->
-    <?php if(!empty($menu)): ?>
-        <ul class="nav nav-pills">
-            <?php foreach ($menu as $item):  ?>
-                <li><a href="category/<?=$item['id']?>"><?=$item['name']?></a></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-
-    <h1>default layout</h1>
-    <?=$content?>
+    <h1>Админка</h1>
+     <?=$content?>
 
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="/public/bootstrap/js/bootstrap.min.js"></script>
-
-<?php foreach ($scripts as $script) {
-    echo $script . "\n";
-} ?>
 
 </body>
 </html>

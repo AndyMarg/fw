@@ -1,8 +1,8 @@
 <?php
 
-namespace vendor\core\base;
+namespace vendor\fw\core\base;
 
-use vendor\core\Config;
+use vendor\fw\core\Config;
 
 class View
 {
@@ -67,6 +67,7 @@ class View
      * @param string $view Вид для рендеринга
      * @param array $vars Массив переменных
      * @return string Контент вида
+     * @throws \Exception
      */
     public static function getViewContent($controller, $view, $vars)
     {
@@ -75,12 +76,14 @@ class View
             extract($vars);
 
         // подключаем вид (сохраняем буфер вывода в локальную переменную для последующего вывода в шаблоне)
-        $file_view = Config::instance()->path->views . "/{$controller->getName()}/{$view}.php";
+        $config = Config::instance();
+        $path = ($controller->isAdmin()) ? $config->path->admin_views : $config->path->views;
+        $file_view = $path . "/{$controller->getName()}/{$view}.php";
         ob_start();
         if (is_file($file_view)) {
             require $file_view;
         } else {
-            echo "Не найден вид <b>{$file_view}</b><br>";
+            throw new \Exception("Не найден вид <b>{$file_view}</b><br>");
         }
         return ob_get_clean();
     }
@@ -89,6 +92,7 @@ class View
      * Рендеринг страницы
      *
      * @param $vars Массив переменных для использовани в виде/шаблоне. Передается из контроллера
+     * @throws \Exception
      */
     public function render($vars)
     {
@@ -102,7 +106,9 @@ class View
         // подключаем и выводим шаблон (вид в шаблоне берется из локальной переменной)
         // если вывод шаблона и, соответственно, вида не заблокирован (нужно для AJAX)
         if (false !== $this->controller->getLayout()) {
-            $file_layout = Config::instance()->root . "/app/views/layouts/{$this->controller->getLayout()}.php";
+            $config = Config::instance();
+            $path = ($this->controller->isAdmin()) ? $config->path->admin_views : $config->path->views;
+            $file_layout = $path . "/layouts/{$this->controller->getLayout()}.php";
             if (is_file($file_layout)) {
                 // вырезаем скрипты из контента вида
                 $content = $this->cutScripts($content);
@@ -114,7 +120,7 @@ class View
                 // подключаем шаблон
                 require $file_layout;
             } else {
-                echo "Не найден шаблон <b>{$file_layout}</b><br>";
+                throw new \Exception("Не найден шаблон <b>{$file_layout}</b><br>");
             }
         }
     }

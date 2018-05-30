@@ -7,19 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ошибка!</title>
 </head>
-<body style="background-color: #e4b9b9">
+<body>
     <h1>Произошла ошибка</h1>
     <p><b>Уровень ошибки: </b><?= $errLevel ?></p>
     <p><b>Текст ошибки: </b><?= $errstr ?></p>
     <p><b>Файл, в котором произошла ошибка: </b><?= $errfile ?></p>
     <p><b>Строка, в которой произошла ошибка: </b><?= $errline ?></p>
-
-    <?php if (!empty($trace)): ?>
-        <p><b>Трассировка вызова: </b></p>
-        <?php foreach (explode('#', $trace) as $item): { ?>
-            <?= $item; ?><br>
-        <?php } endforeach; ?>
-    <?php endif; ?>
-
 </body>
 </html>

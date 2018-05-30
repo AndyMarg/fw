@@ -1,9 +1,9 @@
 <?php
 
-namespace vendor\widgets\menu;
+namespace vendor\fw\widgets\menu;
 
 
-use vendor\core\Config;
+use vendor\fw\core\Config;
 
 /**
  * Class Menu Виджет меню (настраиваемый)
