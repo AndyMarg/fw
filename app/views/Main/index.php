@@ -16,12 +16,12 @@
         $menu->run();
     ?>
     <br><br>
-
-    <?php
-        $menu = new \fw\widgets\menu\Menu();
-        $menu->run();
-    ?>
-
+<!---->
+<!--    --><?php
+//        $menu = new \fw\widgets\menu\Menu();
+//        $menu->run();
+//    ?>
+<!---->
     <div id="answer"></div>
     <?php if(!empty($posts)): ?>
         <?php foreach ($posts as $post): ?>

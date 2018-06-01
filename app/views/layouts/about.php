@@ -14,16 +14,11 @@
 
 <div class="container">
 
-    <!-- MENU -->
+    <ul class="nav nav-pills">
+        <li><a href="/">Home</a></li>
+    </ul>
 
-    <?php if(!empty($menu)): ?>
-        <ul class="nav nav-pills">
-            <li><a href="/page/about">About</a></li>
-            <li><a href="/admin">Админка</a></li>
-        </ul>
-    <?php endif; ?>
-
-    <h1>default layout</h1>
+    <h1>About layout</h1>
     <?=$content?>
 
 </div>

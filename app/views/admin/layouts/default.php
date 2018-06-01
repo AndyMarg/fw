@@ -14,7 +14,11 @@
 
 <div class="container">
 
-    <h1>Админка</h1>
+    <ul class="nav nav-pills">
+        <li><a href="/">Home</a></li>
+    </ul>
+
+    <h1>Admin layout</h1>
     <?=$content?>
 
 </div>

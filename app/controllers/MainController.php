@@ -2,23 +2,31 @@
 
 namespace app\controllers;
 
-// use app\models\Main;
 use fw\core\base\View;
 use fw\core\Config;
+//use Monolog\Handler\StreamHandler;
+//use Monolog\Logger;
 
 class MainController extends AppController
 {
     public function __construct($route)
     {
         parent::__construct($route);
-        //$this->setLayout('main');
     }
 
     public function indexAction()
     {
         View::setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
 
-        //$model = new Main();
+        // Пример работы с пакетом установленным Composer - пакет Monolog для логгирования
+        /*
+        // create a log channel
+        $log = new Logger('name');
+        $log->pushHandler(new StreamHandler(Config::instance()->path->temp . '/test.log', Logger::WARNING));
+        // add records to the log
+        $log->warning('Foo');
+        $log->error('Bar');
+        */
 
         // пример работы с кэшем !!!!!!!!!!!!
 

@@ -2,14 +2,19 @@
 
 namespace app\controllers;
 
-use app\models\Main;
-
 class PageController extends AppController
 {
+    public function __construct($route)
+    {
+        parent::__construct($route);
+        $this->setLayout('about');
+    }
+
     public function viewAction() {
-        $model = new Main();
-        $menu = $this->getMenu();
-        $this->setVars(compact('menu'));
+    }
+
+    public function aboutAction() {
+
     }
 
 }
