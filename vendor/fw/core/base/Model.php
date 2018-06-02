@@ -4,12 +4,17 @@ namespace fw\core\base;
 
 
 use fw\core\Db;
+use Valitron\Validator;
 
 abstract class Model
 {
     private $db;
     private $table;
     private $pk = 'id';
+
+    private $attributes = [];
+    private $errors = [];
+    private $rules = [];
 
     public function __construct()
     {
@@ -36,9 +41,55 @@ abstract class Model
         $this->pk = $pk;
     }
 
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+    }
+
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+    public function setRules($rules)
+    {
+        $this->rules = $rules;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
     public function query($sql)
     {
         return $this->db->execute($sql);
+    }
+
+    public function load(array $data)
+    {
+        foreach ($this->attributes as $key => $value) {
+            if (isset($data[$key])) {
+                $this->attributes[$key] = $data[$key];
+            }
+        }
+    }
+
+    public function validate()
+    {
+        $validator = new Validator($this->attributes);
+        $validator->rules($this->rules);
+        if ($validator->validate()) {
+            return true;
+        } else {
+            $this->errors = $validator->errors();
+            return false;
+        }
     }
 
     public function findAll()

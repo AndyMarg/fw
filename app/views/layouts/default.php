@@ -16,13 +16,12 @@
 
     <ul class="nav nav-pills">
         <li><a href="/page/about">About</a></li>
-        <li><a href="/admin">Админка</a></li>
         <li><a href="/user/signup">Signup</a></li>
         <li><a href="/user/login">Login</a></li>
         <li><a href="/user/logout">Logout</a></li>
+        <li><a href="/admin">Админка</a></li>
     </ul>
 
-    <h1>default layout</h1>
     <?=$content?>
 
 </div>
