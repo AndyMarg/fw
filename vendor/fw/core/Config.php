@@ -101,6 +101,9 @@ class Config
         if (isset($this->objectRegistry->cache)) {
             $this->cache = $this->objectRegistry->cache;
         }
+
+        // Стартуем сессию
+        session_start();
     }
 
     /**

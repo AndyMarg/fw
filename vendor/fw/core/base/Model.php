@@ -80,6 +80,15 @@ abstract class Model
         }
     }
 
+    public function save($table)
+    {
+        $user = \R::dispense($table);
+        foreach ($this->attributes as $name => $value) {
+            $user->$name = $value;
+        }
+        return \R::store($user);
+    }
+
     public function validate()
     {
         $validator = new Validator($this->attributes);
@@ -88,7 +97,15 @@ abstract class Model
             return true;
         } else {
             $this->errors = $validator->errors();
-            debug($this->errors); //###########################3
+            // сохраняем HTML код ошибок в сессии
+            $messages = '<ul>';
+            foreach ($this->errors as $error) {
+                foreach ($error as $item) {
+                    $messages .= "<li>$item</li>";
+                }
+            }
+            $messages  .= '</ul>';
+            $_SESSION['errors'] = $messages;
             return false;
         }
     }

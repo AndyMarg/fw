@@ -22,6 +22,28 @@
         <li><a href="/admin">Админка</a></li>
     </ul>
 
+    <!-- Показать ошибки, если есть  -->
+    <?php if(isset($_SESSION['errors'])):  ?>
+        <div class="alert alert-danger">
+            <?php
+                echo $_SESSION['errors'];
+                unset($_SESSION['errors']);
+            ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- Если действие успешно -->
+    <?php if(isset($_SESSION['success'])):  ?>
+        <div class="alert alert-success">
+            <?php
+                echo $_SESSION['success'];
+                unset($_SESSION['success']);
+            ?>
+        </div>
+    <?php endif; ?>
+
+
+    <!-- Контент из View -->
     <?=$content?>
 
 </div>

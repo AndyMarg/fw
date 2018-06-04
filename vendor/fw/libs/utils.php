@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Вывод отлабочной информации
+ *
+ * @param $var Переменная/объект для вывода
+ * @param string $message Поясняющее сообщение
+ */
 function debug($var,  $message = '')
 {
     if ($message) {
@@ -12,4 +18,20 @@ function debug($var,  $message = '')
         echo print_r($var, true);
     }
     echo '</pre>';
+}
+
+/**
+ * редирект на заданную страницу
+ *
+ * @param $url URL для редиректа. Если не задан - перенаправляем на ту страницу, с которой пользователь пришел.
+ */
+function redirect($url = false) {
+    if ($url) {
+        $redirect = $url;
+    } else {
+        $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
+    }
+    header("Location: $redirect");
+    // завершаем выполнение скрипта
+    exit;
 }

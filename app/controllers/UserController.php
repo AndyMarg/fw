@@ -13,12 +13,17 @@ class UserController extends AppController
         if (!empty($_POST)) {
             $user = new User();
             $user->load($_POST);
-            if ($user->validate()) {
-                echo 'OK';
-            } else {
-                debug($user->getErrors(),'Error validation');
+            if (!$user->validate()) {
+                redirect();
             }
-            die;
+            if ($user->save('user')) {
+                $_SESSION['success'] = 'Вы успешно зарегистрированы!';
+                // здесь может быть редирект на страницу профиля пользователя
+                redirect();
+            } else {
+                $_SESSION['errors'] = 'Ошибка! Попробуйте позже';
+                redirect();
+            }
         }
         View::setMeta('Регистрация');
     }
