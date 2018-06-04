@@ -16,5 +16,21 @@
     <orderEntry type="library" name="popper" level="application" />
     <orderEntry type="library" name="jquery-3.3.1.slim" level="application" />
     <orderEntry type="library" name="popper" level="application" />
+    <orderEntry type="module-library">
+      <library name="PHP" type="php">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/fw/core" />
+          <root url="file://$MODULE_DIR$/vendor/fw/libs" />
+          <root url="file://$MODULE_DIR$/vendor/fw/widgets" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/fw/core" />
+          <root url="file://$MODULE_DIR$/vendor/fw/libs" />
+          <root url="file://$MODULE_DIR$/vendor/fw/widgets" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

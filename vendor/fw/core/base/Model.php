@@ -88,6 +88,7 @@ abstract class Model
             return true;
         } else {
             $this->errors = $validator->errors();
+            debug($this->errors); //###########################3
             return false;
         }
     }
