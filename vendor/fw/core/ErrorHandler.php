@@ -135,12 +135,14 @@ class ErrorHandler
     private function displayError($errno, $errstr, $errfile, $errline, $responseCode = 500, $trace = '')
     {
         $error_path = Config::instance()->path->error_views;
-        http_response_code($responseCode);
-        // 404
-        if ($responseCode === 404) {
-            include $error_path . '/' . Config::instance()->debug->view_404;
-            die;
+        if (!is_string($responseCode)) {
+            http_response_code($responseCode);
+            // 404
+            if ($responseCode === 404) {
+                include $error_path . '/' . Config::instance()->debug->view_404;
+                die;
         }
+         }
         // прочие ошибки
         $errLevel = $this->getErrorLevelDescript($errno);
         if (Config::instance()->debug->debugging) {

@@ -15,18 +15,19 @@ class Db
     private function __construct()
     {
         $config = Config::instance();
+
         require_once $config->root . '/vendor/fw/libs/rb-mysql.php';
         \R::setup($config->db->dns, $config->db->user, $config->db->pass);
         \R::freeze(true);
         //\R::fancyDebug(true);
 
-//        // настройки PDO
-//        $connect_options = [
-//            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,      // выдавать в поток вывода ошибки SQL
-//            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC  // возвращать данные в виде ассоциативного (не нумерованного массива)
-//        ];
-//        // подключаемся к БД
-//        $this->pdo = new \PDO(ConfigDB::DSN, ConfigDB::USER, ConfigDB::PASS, $connect_options);
+        // настройки PDO
+        $connect_options = [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,      // выдавать в поток вывода ошибки SQL
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC  // возвращать данные в виде ассоциативного (не нумерованного массива)
+        ];
+        // подключаемся к БД
+        $this->pdo = new \PDO($config->db->dns, $config->db->user, $config->db->pass, $connect_options);
 
     }
 

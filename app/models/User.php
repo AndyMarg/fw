@@ -10,6 +10,9 @@ class User extends Model
 
     public function __construct()
     {
+        parent::__construct();
+        $this->setTable('user');
+
         $this->setAttributes([
             'login' => '',
             'password' => '',

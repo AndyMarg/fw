@@ -51,6 +51,20 @@ abstract class Model
         $this->attributes = $attributes;
     }
 
+    public function setAttribute($key, $value) {
+        if (key_exists($key,$this->attributes)) {
+            $this->attributes[$key] = $value;
+        }
+    }
+
+    public function getAttribute($key)
+    {
+        if (key_exists($key, $this->attributes)) {
+            return $this->attributes[$key];
+        }
+        return false;
+    }
+
     public function getRules()
     {
         return $this->rules;
@@ -66,9 +80,9 @@ abstract class Model
         return $this->errors;
     }
 
-    public function query($sql)
+    public function query($sql, $params = [])
     {
-        return $this->db->execute($sql);
+        return $this->db->execute($sql, $params);
     }
 
     public function load(array $data)
@@ -80,13 +94,11 @@ abstract class Model
         }
     }
 
-    public function save($table)
+    public function save()
     {
-        $user = \R::dispense($table);
-        foreach ($this->attributes as $name => $value) {
-            $user->$name = $value;
-        }
-        return \R::store($user);
+        $sql = 'insert into ' . $this->table .  '('. implode(',',  array_keys($this->attributes)) . ')' .
+               ' values (' . substr(str_repeat('?,', sizeof($this->attributes)), 0, sizeof($this->attributes)*2-1)  . ')';
+        return $this->db->execute($sql, array_values($this->attributes));
     }
 
     public function validate()
