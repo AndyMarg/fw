@@ -34,6 +34,20 @@ class User extends Model
                 ['password', 6]
             ]
         ]);
+
+        $this->setUniquies([
+            'login' => "Логин со значением \"%s\" уже зарегистрирован",
+            'email' => "Email со значением \"%s\" уже зарегистрирован"
+        ]);
+    }
+
+    public function login($login, $password)
+    {
+        if (trim($login) && trim($password)) {
+            $data = $this->findByName('login', $login);
+            debug($data); die;
+        }
+        return false;
     }
 
 }

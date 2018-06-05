@@ -19,6 +19,7 @@ abstract class Model
     private $attributes = [];   // аттрибуты модели, которые будут сохраняться в БД
     private $errors = [];       // ошибки (не пусто, если что-то пошло не так)
     private $rules = [];        // равила валидации (в формате библиотеки Valitron\Validator)
+    private $uniquies = [];     // список аттрибутов, которые должны быть уникальными
 
     public function __construct()
     {
@@ -88,6 +89,16 @@ abstract class Model
         return $this->errors;
     }
 
+    public function getUniquies()
+    {
+        return $this->uniquies;
+    }
+
+    public function setUniquies($unequies)
+    {
+        $this->uniquies = $unequies;
+    }
+
 
     /**
      * Выполнение произвольного запроса к БД (без возврата результирующего массива)
@@ -146,6 +157,23 @@ abstract class Model
     }
 
     /**
+     * Проверка уникальности аттрибутов (уникальные аттрибуты находяться в массиве uniquies
+     *
+     * @return bool false, если нарушена уникальность
+     */
+    private function checkUniquies()
+    {
+        $result = true;
+        foreach ($this->uniquies as $field => $format) {
+            if ($this->findByName($field, $this->attributes[$field])) {
+                $this->errors[$field][0] = sprintf($format,  $this->attributes[$field]);
+                $result = false;
+            }
+        }
+        return $result;
+    }
+
+    /**
      * Валидация модели
      *
      * @return bool true, если успешно
@@ -155,11 +183,17 @@ abstract class Model
         $validator = new Validator($this->attributes);
         $validator->rules($this->rules);
         if ($validator->validate()) {
+            if (!$this->checkUniquies())  {
+                $_SESSION['errors'] = $this->getHtmlCodeForErrors();
+                $_SESSION['form_data'] =  $this->attributes;
+                return false;
+            }
+
             return true;
         } else {
             $this->errors = $validator->errors();
-            // сохраняем HTML код ошибок в сессии
             $_SESSION['errors'] = $this->getHtmlCodeForErrors();
+            $_SESSION['form_data'] =  $this->attributes;
             return false;
         }
     }

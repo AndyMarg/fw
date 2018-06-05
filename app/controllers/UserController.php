@@ -36,7 +36,11 @@ class UserController extends AppController
 
     public function loginAction()
     {
-
+        if(!empty($_POST['login']) && !empty($_POST['password'])) {
+            $user = new User();
+            $user->login($_POST['login'], $_POST['password']);
+        }
+        View::setMeta("Вход");
     }
 
     public function logoutAction()

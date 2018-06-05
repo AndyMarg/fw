@@ -3,6 +3,8 @@
 namespace fw\core;
 
 
+use Valitron\Validator;
+
 require_once 'TSingleton.php';
 
 /**
@@ -104,6 +106,9 @@ class Config
 
         // Стартуем сессию
         session_start();
+
+        // настраиваем язык валидатора
+        Validator::lang('ru');
     }
 
     /**
