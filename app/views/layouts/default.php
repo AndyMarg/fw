@@ -14,13 +14,15 @@
 
 <div class="container">
 
-    <ul class="nav nav-pills">
-        <li><a href="/page/about">About</a></li>
-        <li><a href="/user/signup">Signup</a></li>
-        <li><a href="/user/login">Login</a></li>
-        <li><a href="/user/logout">Logout</a></li>
-        <li><a href="/admin">Админка</a></li>
-    </ul>
+    <div>
+        <ul class="nav nav-pills">
+            <li><a href="/page/about">About</a></li>
+            <li><a href="/user/signup">Signup</a></li>
+            <li><a href="/user/login">Login</a></li>
+            <li><a href="/user/logout">Logout</a></li>
+            <li><a href="/admin">Админка</a></li>
+        </ul>
+    </div>
 
     <!-- Показать ошибки, если есть  -->
     <?php if(isset($_SESSION['errors'])):  ?>
@@ -41,7 +43,6 @@
             ?>
         </div>
     <?php endif; ?>
-
 
     <!-- Контент из View -->
     <?=$content?>

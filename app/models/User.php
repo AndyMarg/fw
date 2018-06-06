@@ -43,9 +43,16 @@ class User extends Model
 
     public function login($login, $password)
     {
-        if (trim($login) && trim($password)) {
-            $data = $this->findByName('login', $login);
-            debug($data); die;
+        if ($login && $password) {
+            // получаем пользователя из БД
+            $user = $this->findByName('login', $login);
+            // проверяем пароль, если авторизация успешна, мохраняем информацию о пользователе в сессии
+            if ($user && password_verify($password, $user[0]['password'])) {
+                foreach ($user[0] as $name => $value) {
+                    $_SESSION['user'][$name] = $value;
+                }
+                return true;
+            }
         }
         return false;
     }

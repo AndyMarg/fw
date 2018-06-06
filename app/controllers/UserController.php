@@ -38,14 +38,22 @@ class UserController extends AppController
     {
         if(!empty($_POST['login']) && !empty($_POST['password'])) {
             $user = new User();
-            $user->login($_POST['login'], $_POST['password']);
+            if ($user->login(trim($_POST['login']), trim($_POST['password']))) {
+                $_SESSION['success'] = 'Вы успешно авторизованы!';
+                // здесь может быть редирект на страницу профиля пользователя
+                redirect('/');
+            } else {
+                $_SESSION['errors'] = 'Логин/пароль введены неверно';
+                redirect();
+            }
         }
         View::setMeta("Вход");
     }
 
     public function logoutAction()
     {
-
+        if (isset($_SESSION['user'])) unset($_SESSION['user']);
+        redirect('/user/login');
     }
 
 }
