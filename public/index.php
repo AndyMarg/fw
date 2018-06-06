@@ -8,6 +8,9 @@ use fw\core\Config;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+//$p = new \fw\core\Pagination(1,1,1);
+
+
 // инициализация и конфигурация фреймворка
 $config = Config::instance();
 $config->init($app_config_data);

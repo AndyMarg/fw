@@ -42,6 +42,10 @@ $_config_data = [
             'cache_time' => 3600,
             'cache_key' => ''
         ]
+    ],
+
+    'pagination' => [
+        'rows_per_page' => 2
     ]
 
 ];
