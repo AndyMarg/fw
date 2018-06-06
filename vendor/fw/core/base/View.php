@@ -92,9 +92,10 @@ class View
      * Рендеринг страницы
      *
      * @param $vars Массив переменных для использовани в виде/шаблоне. Передается из контроллера
+     * @param $compress true, если необходимо сжать вывод
      * @throws \Exception
      */
-    public function render($vars)
+    public function render($vars, $compress = false)
     {
         // извлекаем переменные
         if (is_array($vars))
@@ -118,7 +119,17 @@ class View
                     $scripts = $this->scripts['scripts'];
                 }
                 // подключаем шаблон
+                // если необходимо, сжимаем вывод
+                if ($compress) {
+                    ob_start("ob_gzhandler");
+                    header("Content-Encoding: gzip");
+                } else {
+                    ob_start();
+                }
                 require $file_layout;
+                $content = ob_get_contents();
+                ob_clean();
+                echo $content;
             } else {
                 throw new \Exception("Не найден шаблон <b>{$file_layout}</b><br>");
             }
