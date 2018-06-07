@@ -55,9 +55,12 @@ class Router
      */
     private static function removeQueryString($uri) {
         if (preg_match("#([/]?\?)#", $uri, $matches, PREG_OFFSET_CAPTURE)) {
-            $uri = '/' . substr($uri,1, $matches[1][1]-1);
+            if ($matches[1][1] === 0) {
+                return "";
+            } else {
+                return '/' . substr($uri, 1, $matches[1][1] - 1);
+            }
         }
-        return $uri;
     }
 
     /**

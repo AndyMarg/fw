@@ -8,8 +8,6 @@ use fw\core\Config;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-//$p = new \fw\core\Pagination(1,1,1);
-
 
 // инициализация и конфигурация фреймворка
 $config = Config::instance();
@@ -34,3 +32,4 @@ $uri = rtrim($_SERVER['REQUEST_URI'],'/');
 Router::dispatch($uri);
 
 
+//htmlspecialchars($str, ENT_QUOTES);

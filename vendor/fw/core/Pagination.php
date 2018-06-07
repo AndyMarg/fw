@@ -3,7 +3,6 @@
 namespace fw\core;
 
 /**
- * TEST
  * Class Pagination Класс пагинации
  * @package fw\core
  */
@@ -21,6 +20,17 @@ class Pagination
          $this->totalRows = $totalRows;
          $this->totalPages = $this->getCountPages();
          $this->currentPage = $this->getCurrentPage($Page);
+         $this->uri = $this->getParams();
+    }
+
+    public function getTotalRows()
+    {
+        return $this->totalRows;
+    }
+
+    public function getTotalPages()
+    {
+        return $this->totalPages;
     }
 
     /**
@@ -45,7 +55,7 @@ class Pagination
     /**
      * @return int Номер первой записи на текущей страницы
      */
-    private function getFirstRowInPage()
+    public function getFirstRowInPage()
     {
         return ($this->currentPage - 1) * $this->rowsPerPage;
     }
@@ -70,7 +80,39 @@ class Pagination
      * @return string Код HTML для объекта пагинации
      */
     private function getHtml() {
-        return "This is a Pagination object";
+
+        $back = null;           // ссылка на предыдущую страницу
+        $forward = null;        // ссылка на следующую страницу
+        $startpage = null;      // ссылка на первую страницу
+        $endpage = null;        // ссылка на последнюю страницу
+        $page2left = null;      // вторая страница слева
+        $page1left = null;      // первая страница слева
+        $page2right = null;     // вторая страница справа
+        $page1right = null;     // первая страница справа
+
+        if ($this->currentPage > 1)
+            $back = "<li><a class='nav-link' href='{$this->uri}page=" . ($this->currentPage - 1) . "'>&lt;</a></li>";
+        if ($this->currentPage < $this->totalPages)
+            $forward = "<li><a class='nav-link' href='{$this->uri}page=" . ($this->currentPage + 1) . "'>&gt;</a></li>";
+        if ($this->currentPage > 3)
+            $startpage = "<li><a class='nav-link' href='{$this->uri}page=1'>&laquo;</a></li>";
+        if ($this->currentPage <  ($this->totalPages - 2))
+            $endpage = "<li><a class='nav-link' href='{$this->uri}page={$this->totalPages}'>&raquo;</a></li>";
+        if (($this->currentPage - 2) > 0 )
+            $page2left = "<li><a class='nav-link' href='{$this->uri}page=" . ($this->currentPage - 2) . "'>" . ($this->currentPage - 2) . "</a></li>";
+        if (($this->currentPage - 1) > 0 )
+            $page1left = "<li><a class='nav-link' href='{$this->uri}page=" . ($this->currentPage - 1) . "'>" . ($this->currentPage - 1) . "</a></li>";
+        if (($this->currentPage + 1) <= $this->totalPages )
+            $page1right = "<li><a class='nav-link' href='{$this->uri}page=" . ($this->currentPage + 1) . "'>" . ($this->currentPage + 1) . "</a></li>";
+        if (($this->currentPage + 2) <= $this->totalPages )
+            $page2right = "<li><a class='nav-link' href='{$this->uri}page=" . ($this->currentPage + 2) . "'>" . ($this->currentPage + 2) . "</a></li>";
+
+        return
+            '<ul class="pagination">' .
+                $startpage.$back.$page2left.$page1left .
+                '<li class="active"><a>' . $this->currentPage . '</a></li>' .
+                $page1right.$page2right.$forward.$endpage .
+            '</ul>'  ;
     }
 
     /**

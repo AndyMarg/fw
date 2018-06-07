@@ -45,7 +45,7 @@ $_config_data = [
     ],
 
     'pagination' => [
-        'rows_per_page' => 2
+        'rows_per_page' => 4
     ]
 
 ];

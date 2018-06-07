@@ -30,7 +30,16 @@
                     <div class="panel-body"><?= $post['text'] ?></div>
                 </div>
         <?php endforeach; ?>
+
+        <div class="text-center">
+            <p>Статей: <?= count($posts) ?> из <?= $pagination->getTotalRows(); ?></p>
+            <?php
+                if ($pagination->getTotalPages() > 1)
+                    echo $pagination;
+            ?>
+        </div>
     <?php endif; ?>
+
 </div>
 <!--View Main->index end -->
 

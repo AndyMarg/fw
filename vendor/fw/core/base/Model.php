@@ -203,9 +203,13 @@ abstract class Model
      *
      * @return mixed Результирующий массив данных из БД
      */
-    public function findAll()
+    public function findAll($limit = [])
     {
-        $sql = "select * from {$this->table}";
+        $limit_string = '';
+        if (!empty($limit)) {
+            $limit_string = ' limit ' . (isset($limit[0]) ? $limit[0] : '') . (isset($limit[1]) ? ', ' .$limit[1] : '');
+        }
+        $sql = "select * from {$this->table}" . $limit_string;
         return $this->db->query($sql);
     }
 
@@ -258,6 +262,14 @@ abstract class Model
     {
         $sql = "select * from {$this->table} where $field  like ?";
         return $this->db->query($sql, ['%' .$pattern . '%']);
+    }
+
+    /**
+     * @return mixed Количество записей в таблице
+     */
+    public function count() {
+        $sql = "select count(*) cnt from {$this->table}";
+        return $this->db->query($sql)[0]['cnt'];
     }
 
 }

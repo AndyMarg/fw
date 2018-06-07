@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Main;
 use fw\core\base\View;
 use fw\core\Config;
+use fw\core\Pagination;
 
 class MainController extends AppController
 {
@@ -20,19 +21,16 @@ class MainController extends AppController
     {
         View::setMeta('Главная страница', 'Описание страницы', 'Ключевые слова');
 
-        // пример работы с кэшем !!!!!!!!!!!!
+        // настройка пагинации
+        $totalRows = $this->model->count();
+        $rowsPerPage = Config::instance()->pagination->rows_per_page;
+        $currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $pagination = new Pagination($currentPage, $rowsPerPage, $totalRows);
 
-        // пробуем получить данные из кэша
-        $posts = Config::instance()->getCache()->get('posts');
-        // если данных в кэше нет (либо еще не созданы, либо кэш удален по причине устаревания)
-        if (!$posts) {
-            // получаем данные из базы
-            $posts = $this->model->findAll();
-            // соэраняем в кэше на 1 минуту
-            Config::instance()->getCache()->set('posts', $posts, 60);
-        }
+        // получаем данные из базы
+        $posts = $this->model->findAll([$pagination->getFirstRowInPage(), $rowsPerPage]);
 
-        $this->setVars(compact('posts'));
+        $this->setVars(compact('posts', 'pagination'));
     }
 
     public function testAction()
